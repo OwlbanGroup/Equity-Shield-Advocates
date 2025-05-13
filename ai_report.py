@@ -2,8 +2,11 @@ import json
 import csv
 from ai_analysis import CorporateAnalysis
 
+import os
 class ReportGenerator:
-    def __init__(self, json_path='corporate_structure.json'):
+    def __init__(self, json_path=None):
+        if json_path is None:
+            json_path = os.path.join(os.path.dirname(__file__), 'data/corporate_structure.json')
         self.analysis = CorporateAnalysis(json_path)
 
     def generate_text_report(self, filename='report.txt'):

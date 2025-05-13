@@ -1,0 +1,38 @@
+{
+  "Technology": [
+    {
+      "name": "Microsoft Corporation",
+      "ticker": "MSFT",
+      "description": "Technology company specializing in software, hardware, and cloud services."
+    },
+    {
+      "name": "Apple Inc.",
+      "ticker": "AAPL",
+      "description": "Technology company known for consumer electronics and software."
+    }
+  ],
+  "Finance": [
+    {
+      "name": "JPMorgan Chase & Co.",
+      "ticker": "JPM",
+      "description": "Financial services company providing banking and investment services."
+    },
+    {
+      "name": "Goldman Sachs Group, Inc.",
+      "ticker": "GS",
+      "description": "Investment banking and financial services firm."
+    }
+  ],
+  "Healthcare": [
+    {
+      "name": "Johnson & Johnson",
+      "ticker": "JNJ",
+      "description": "Healthcare company producing pharmaceuticals and medical devices."
+    },
+    {
+      "name": "Pfizer Inc.",
+      "ticker": "PFE",
+      "description": "Pharmaceutical company developing medicines and vaccines."
+    }
+  ]
+}

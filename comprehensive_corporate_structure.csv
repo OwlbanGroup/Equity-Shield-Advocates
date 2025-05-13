@@ -1,10 +1,10 @@
 company,ticker,sector,market_cap,revenue
-Alphabet Inc.,GOOG,Communication Services,1943302307840,359713013760
-Microsoft Corporation,MSFT,Technology,3335240810496,270010007552
-NVIDIA Corporation,NVDA,Technology,3176391770112,130497003520
-JP Morgan Chase & Co.,JPM,Financial Services,731331428352,168713994240
-Bank of America Corporation,BAC,Financial Services,334001209344,97452998656
-"Citigroup, Inc.",C,Financial Services,141506281472,71819001856
-"Prologis, Inc.",PLD,Real Estate,101876998144,8733704192
-American Tower Corporation (REI,AMT,Real Estate,95551643648,10177399808
-"Simon Property Group, Inc.",SPG,Real Estate,60985561088,5994220032
+Alphabet Inc.,GOOG,Communication Services,1944822218752,359713013760
+Microsoft Corporation,MSFT,Technology,3338251272192,270010007552
+NVIDIA Corporation,NVDA,Technology,3170291679232,130497003520
+JP Morgan Chase & Co.,JPM,Financial Services,730928447488,168713994240
+Bank of America Corporation,BAC,Financial Services,333511622656,97452998656
+"Citigroup, Inc.",C,Financial Services,141144358912,71819001856
+"Prologis, Inc.",PLD,Real Estate,101793480704,8733704192
+American Tower Corporation (REI,AMT,Real Estate,95481430016,10177399808
+"Simon Property Group, Inc.",SPG,Real Estate,60646293504,5994220032

@@ -3,7 +3,7 @@
         {
             "company": "Alphabet Inc.",
             "ticker": "GOOG",
-            "market_cap": 1943302307840,
+            "market_cap": 1944822218752,
             "revenue": 359713013760
         }
     ],
@@ -11,13 +11,13 @@
         {
             "company": "Microsoft Corporation",
             "ticker": "MSFT",
-            "market_cap": 3335240810496,
+            "market_cap": 3338251272192,
             "revenue": 270010007552
         },
         {
             "company": "NVIDIA Corporation",
             "ticker": "NVDA",
-            "market_cap": 3176391770112,
+            "market_cap": 3170291679232,
             "revenue": 130497003520
         }
     ],
@@ -25,19 +25,19 @@
         {
             "company": "JP Morgan Chase & Co.",
             "ticker": "JPM",
-            "market_cap": 731331428352,
+            "market_cap": 730928447488,
             "revenue": 168713994240
         },
         {
             "company": "Bank of America Corporation",
             "ticker": "BAC",
-            "market_cap": 334001209344,
+            "market_cap": 333511622656,
             "revenue": 97452998656
         },
         {
             "company": "Citigroup, Inc.",
             "ticker": "C",
-            "market_cap": 141506281472,
+            "market_cap": 141144358912,
             "revenue": 71819001856
         }
     ],
@@ -45,19 +45,19 @@
         {
             "company": "Prologis, Inc.",
             "ticker": "PLD",
-            "market_cap": 101876998144,
+            "market_cap": 101793480704,
             "revenue": 8733704192
         },
         {
             "company": "American Tower Corporation (REI",
             "ticker": "AMT",
-            "market_cap": 95551643648,
+            "market_cap": 95481430016,
             "revenue": 10177399808
         },
         {
             "company": "Simon Property Group, Inc.",
             "ticker": "SPG",
-            "market_cap": 60985561088,
+            "market_cap": 60646293504,
             "revenue": 5994220032
         }
     ]

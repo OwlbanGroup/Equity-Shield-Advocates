@@ -1,4 +1,4 @@
-# Equity Shield Advocates
+# Equity Shield Advocates APP
 
 ## Project Overview
 Equity Shield Advocates is an application designed to provide structured corporate data and real assets information across various sectors. It includes an API server to serve corporate and real assets data, and an AI component to query and analyze corporate structures.
@@ -23,26 +23,26 @@ Equity Shield Advocates is an application designed to provide structured corpora
 - `GET /api/real-assets`  
   Returns the list of real assets under management.
 
-## Setup and Running
-- Install dependencies from `requirements.txt` using `pip install -r requirements.txt`.
-- Run the API server with `python src/api_server.py`.
-- Run tests with `python -m unittest discover`.
-
-## Deployment
-- The project uses Gunicorn as the WSGI server, configured in the `Procfile` with the command: `web: gunicorn wsgi:app`.
-- CI/CD pipeline is configured in `.github/workflows/ci-cd.yml` to run tests and lint on push to main branch.
-- Deployment automation commands need to be added to the CI/CD pipeline for full automation.
+## AI Component Usage
+The AI component provides methods to:
+- Get list of sectors.
+- Get companies by sector.
+- Get company details by ticker.
+- Query using simple natural language strings like:
+  - "companies in Technology"
+  - "company with ticker MSFT"
 
 ## Testing
 - Unit tests cover API endpoints and AI component methods.
 - Tests include valid and invalid cases for robustness.
-- Run tests using `python -m unittest discover`.
 
 ## Future Improvements
-- Add deployment automation commands to the CI/CD pipeline.
-- Perform full end-to-end testing including UI and integration.
-- Enhance documentation and add deployment instructions.
 - Expand AI capabilities with advanced analytics and natural language processing.
+- Add more API endpoints and dynamic data updates.
+- Enhance testing coverage and add integration tests.
+- Improve documentation and add deployment automation.
 
-## Contact
-For questions or collaboration, contact the Owlban Group at [contact@owlbangroup.com](mailto:contact@owlbangroup.com).
+## Setup and Running
+- Install dependencies from `requirements.txt`.
+- Run the API server with `python api_server.py`.
+- Run tests with `python -m unittest discover`.

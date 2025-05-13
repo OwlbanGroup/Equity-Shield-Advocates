@@ -44,4 +44,12 @@ jobs:
 
     - name: Deploy to server
       run: |
-        echo "Add deployment commands here"
+        echo "Starting deployment..."
+        # Example: Deploy to a remote server via SSH
+        ssh user@yourserver.com << 'EOF'
+          cd /path/to/your/app
+          git pull origin main
+          # Restart the application service, e.g., systemctl restart yourapp
+          systemctl restart yourapp
+        EOF
+        echo "Deployment completed."

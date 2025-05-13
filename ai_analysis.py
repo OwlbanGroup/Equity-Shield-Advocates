@@ -1,8 +1,11 @@
 import json
 from collections import Counter
 
+import os
 class CorporateAnalysis:
-    def __init__(self, json_path='corporate_structure.json'):
+    def __init__(self, json_path=None):
+        if json_path is None:
+            json_path = os.path.join(os.path.dirname(__file__), 'data/corporate_structure.json')
         with open(json_path, 'r') as f:
             self.data = json.load(f)
 

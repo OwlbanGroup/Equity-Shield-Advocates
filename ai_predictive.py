@@ -2,8 +2,13 @@ import json
 import numpy as np
 from sklearn.linear_model import LinearRegression
 
+import json
+import os
+
 class CorporatePredictiveModel:
-    def __init__(self, json_path='corporate_structure.json'):
+    def __init__(self, json_path=None):
+        if json_path is None:
+            json_path = os.path.join(os.path.dirname(__file__), 'data/corporate_structure.json')
         with open(json_path, 'r') as f:
             self.data = json.load(f)
         self.model = LinearRegression()
