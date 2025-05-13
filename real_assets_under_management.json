@@ -1,0 +1,65 @@
+[
+    {
+        "company": "Alphabet Inc.",
+        "ticker": "GOOG",
+        "sector": "Communication Services",
+        "market_cap": 1943100981248,
+        "revenue": 359713013760
+    },
+    {
+        "company": "Microsoft Corporation",
+        "ticker": "MSFT",
+        "sector": "Technology",
+        "market_cap": 3328179961856,
+        "revenue": 270010007552
+    },
+    {
+        "company": "NVIDIA Corporation",
+        "ticker": "NVDA",
+        "sector": "Technology",
+        "market_cap": 3174806061056,
+        "revenue": 130497003520
+    },
+    {
+        "company": "JP Morgan Chase & Co.",
+        "ticker": "JPM",
+        "sector": "Financial Services",
+        "market_cap": 730400423936,
+        "revenue": 168713994240
+    },
+    {
+        "company": "Bank of America Corporation",
+        "ticker": "BAC",
+        "sector": "Financial Services",
+        "market_cap": 333624606720,
+        "revenue": 97452998656
+    },
+    {
+        "company": "Citigroup, Inc.",
+        "ticker": "C",
+        "sector": "Financial Services",
+        "market_cap": 141394051072,
+        "revenue": 71819001856
+    },
+    {
+        "company": "Prologis, Inc.",
+        "ticker": "PLD",
+        "sector": "Real Estate",
+        "market_cap": 101515108352,
+        "revenue": 8733704192
+    },
+    {
+        "company": "American Tower Corporation (REI",
+        "ticker": "AMT",
+        "sector": "Real Estate",
+        "market_cap": 95589097472,
+        "revenue": 10177399808
+    },
+    {
+        "company": "Simon Property Group, Inc.",
+        "ticker": "SPG",
+        "sector": "Real Estate",
+        "market_cap": 60770693120,
+        "revenue": 5994220032
+    }
+]
