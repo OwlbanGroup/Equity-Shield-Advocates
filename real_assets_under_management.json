@@ -3,63 +3,63 @@
         "company": "Alphabet Inc.",
         "ticker": "GOOG",
         "sector": "Communication Services",
-        "market_cap": 1943100981248,
+        "market_cap": 1943302307840,
         "revenue": 359713013760
     },
     {
         "company": "Microsoft Corporation",
         "ticker": "MSFT",
         "sector": "Technology",
-        "market_cap": 3328179961856,
+        "market_cap": 3335240810496,
         "revenue": 270010007552
     },
     {
         "company": "NVIDIA Corporation",
         "ticker": "NVDA",
         "sector": "Technology",
-        "market_cap": 3174806061056,
+        "market_cap": 3176391770112,
         "revenue": 130497003520
     },
     {
         "company": "JP Morgan Chase & Co.",
         "ticker": "JPM",
         "sector": "Financial Services",
-        "market_cap": 730400423936,
+        "market_cap": 731331428352,
         "revenue": 168713994240
     },
     {
         "company": "Bank of America Corporation",
         "ticker": "BAC",
         "sector": "Financial Services",
-        "market_cap": 333624606720,
+        "market_cap": 334001209344,
         "revenue": 97452998656
     },
     {
         "company": "Citigroup, Inc.",
         "ticker": "C",
         "sector": "Financial Services",
-        "market_cap": 141394051072,
+        "market_cap": 141506281472,
         "revenue": 71819001856
     },
     {
         "company": "Prologis, Inc.",
         "ticker": "PLD",
         "sector": "Real Estate",
-        "market_cap": 101515108352,
+        "market_cap": 101876998144,
         "revenue": 8733704192
     },
     {
         "company": "American Tower Corporation (REI",
         "ticker": "AMT",
         "sector": "Real Estate",
-        "market_cap": 95589097472,
+        "market_cap": 95551643648,
         "revenue": 10177399808
     },
     {
         "company": "Simon Property Group, Inc.",
         "ticker": "SPG",
         "sector": "Real Estate",
-        "market_cap": 60770693120,
+        "market_cap": 60985561088,
         "revenue": 5994220032
     }
 ]

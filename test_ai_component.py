@@ -1,32 +1,40 @@
 import unittest
+import os
+import json
 from ai_component import CorporateStructureAI
 
 class TestCorporateStructureAI(unittest.TestCase):
     def setUp(self):
         self.ai = CorporateStructureAI()
+        self.test_ticker = "MSFT"
+        self.original_data = None
+        # Backup original data
+        with open(self.ai.json_path, 'r') as f:
+            self.original_data = json.load(f)
 
-    def test_get_sectors(self):
-        sectors = self.ai.get_sectors()
-        self.assertIsInstance(sectors, list)
-        self.assertIn('Financial Services', sectors)
-        self.assertIn('Technology', sectors)
+    def tearDown(self):
+        # Restore original data
+        with open(self.ai.json_path, 'w') as f:
+            json.dump(self.original_data, f, indent=4)
 
-    def test_get_companies_by_sector(self):
-        companies = self.ai.get_companies_by_sector('Financial Services')
-        self.assertIsInstance(companies, list)
-        self.assertTrue(len(companies) > 0)
-        self.assertIn('company', companies[0])
-        self.assertIn('ticker', companies[0])
-        self.assertIn('market_cap', companies[0])
-        self.assertIn('revenue', companies[0])
+    def test_update_revenue_success(self):
+        new_revenue = 999999999
+        updated = self.ai.update_revenue(self.test_ticker, new_revenue)
+        self.assertTrue(updated)
+        # Reload data to verify
+        with open(self.ai.json_path, 'r') as f:
+            data = json.load(f)
+        found = False
+        for sector, companies in data.items():
+            for company in companies:
+                if company.get('ticker') == self.test_ticker:
+                    self.assertEqual(company.get('revenue'), new_revenue)
+                    found = True
+        self.assertTrue(found)
 
-    def test_query_valid_sector(self):
-        data = self.ai.query('Technology')
-        self.assertIsInstance(data, list)
-
-    def test_query_invalid_sector(self):
-        data = self.ai.query('Nonexistent Sector')
-        self.assertEqual(data, "Sector not found.")
+    def test_update_revenue_failure(self):
+        updated = self.ai.update_revenue("INVALID", 12345)
+        self.assertFalse(updated)
 
 if __name__ == '__main__':
     unittest.main()

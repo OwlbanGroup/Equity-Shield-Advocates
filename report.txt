@@ -1,0 +1,14 @@
+Corporate Structure Report
+=========================
+
+Sector Summary:
+- Communication Services: 1 companies
+- Technology: 2 companies
+- Financial Services: 3 companies
+- Real Estate: 3 companies
+
+Top Sectors:
+- Financial Services: 3 companies
+- Real Estate: 3 companies
+- Technology: 2 companies
+- Communication Services: 1 companies
