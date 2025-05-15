@@ -1,5 +1,8 @@
 import unittest
 from unittest.mock import patch, mock_open
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
 import extract_corporate_data as ecd
 
 class TestExtractCorporateData(unittest.TestCase):

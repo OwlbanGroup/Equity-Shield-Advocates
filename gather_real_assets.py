@@ -2,10 +2,12 @@ import json
 import csv
 import yfinance as yf
 
+
 # Representative companies' ticker symbols for each sector
 AI_COMPANIES = ["GOOG", "MSFT", "NVDA"]  # Google, Microsoft, Nvidia as AI-related companies
 BANKING_COMPANIES = ["JPM", "BAC", "C"]  # JPMorgan Chase, Bank of America, Citigroup
 REAL_ESTATE_COMPANIES = ["PLD", "AMT", "SPG"]  # Prologis, American Tower, Simon Property Group (REITs)
+
 
 def fetch_company_data(ticker):
     """
@@ -30,6 +32,7 @@ def fetch_company_data(ticker):
         print(f"Error fetching data for {ticker}: {e}")
         return None
 
+
 def gather_data():
     data = []
     for ticker in AI_COMPANIES:
@@ -46,10 +49,12 @@ def gather_data():
             data.append(company_data)
     return data
 
+
 def save_to_json(data, filename="real_assets_under_management.json"):
     with open(filename, "w") as f:
         json.dump(data, f, indent=4)
     print(f"Data saved to {filename}")
+
 
 def save_to_csv(data, filename="real_assets_under_management.csv"):
     if not data:
@@ -62,10 +67,12 @@ def save_to_csv(data, filename="real_assets_under_management.csv"):
         writer.writerows(data)
     print(f"Data saved to {filename}")
 
+
 def save_to_comprehensive_file(data, json_filename="comprehensive_corporate_structure.json", csv_filename="comprehensive_corporate_structure.csv"):
     save_to_json(data, json_filename)
     save_to_csv(data, csv_filename)
     print(f"Comprehensive corporate structure saved to {json_filename} and {csv_filename}")
+
 
 def create_corporate_structure(data):
     """
@@ -84,10 +91,12 @@ def create_corporate_structure(data):
         })
     return structure
 
+
 def save_corporate_structure(structure, filename="corporate_structure.json"):
     with open(filename, "w") as f:
         json.dump(structure, f, indent=4)
     print(f"Corporate structure saved to {filename}")
+
 
 def main():
     data = gather_data()
@@ -97,8 +106,6 @@ def main():
     structure = create_corporate_structure(data)
     save_corporate_structure(structure)
 
-if __name__ == "__main__":
-    main()
 
 if __name__ == "__main__":
     main()

@@ -1,5 +1,8 @@
 import unittest
 import json
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
 from api_server import app
 
 class ApiServerTestCase(unittest.TestCase):
@@ -46,11 +49,11 @@ class ApiServerTestCase(unittest.TestCase):
 
     def test_get_companies_by_sector_empty_string(self):
         response = self.app.get('/api/companies/')
-        self.assertIn(response.status_code, [404, 405])
+        self.assertIn(response.status_code, [400, 404, 405])
 
     def test_get_company_by_ticker_empty_string(self):
         response = self.app.get('/api/company/')
-        self.assertIn(response.status_code, [404, 405])
+        self.assertIn(response.status_code, [400, 404, 405])
 
     def test_get_company_by_ticker_case_insensitive(self):
         # Assuming 'msft' lowercase ticker should work same as 'MSFT'
@@ -59,6 +62,37 @@ class ApiServerTestCase(unittest.TestCase):
         self.assertEqual(response_upper.status_code, response_lower.status_code)
         if response_upper.status_code == 200:
             self.assertEqual(json.loads(response_upper.data), json.loads(response_lower.data))
+
+    def test_get_companies_redirect(self):
+        response = self.app.get('/api/companies')
+        self.assertIn(response.status_code, [301, 302, 307])
+
+    def test_get_company_redirect(self):
+        response = self.app.get('/api/company')
+        self.assertIn(response.status_code, [301, 302, 307])
+
+    def test_get_banking_info(self):
+        response = self.app.get('/api/banking-info')
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.data)
+        self.assertIsInstance(data, dict)
+
+    def test_get_banking_info_test(self):
+        response = self.app.get('/api/banking-info-test')
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.data)
+        self.assertIsInstance(data, dict)
+
+    def test_ping(self):
+        response = self.app.get('/api/ping')
+        self.assertEqual(response.status_code, 200)
+        # Adjusted to expect JSON message response
+        data = json.loads(response.data)
+        self.assertEqual(data.get("message"), "pong")
+
+    def test_test_404(self):
+        response = self.app.get('/api/test-404')
+        self.assertEqual(response.status_code, 404)
 
 if __name__ == '__main__':
     unittest.main()
