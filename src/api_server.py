@@ -62,6 +62,7 @@ def load_corporate_data():
 def create_app():
     app = Flask(__name__)
 
+    _sector_cache = {}
 
     @app.errorhandler(404)
     def not_found_error(error):
@@ -98,12 +99,16 @@ def create_app():
 
     @app.route('/api/companies/<sector>', methods=['GET'])
     def get_companies_by_sector(sector):
+        if sector in _sector_cache:
+            app.logger.debug(f"Cache hit for sector: {sector}")
+            return jsonify(_sector_cache[sector])
         data = load_corporate_structure()
         if not sector:
             return jsonify({"error": "Sector parameter is required"}), 400
         sector_data = data.get(sector)
         if sector_data is None:
             return jsonify({"error": f"Sector '{sector}' not found"}), 404
+        _sector_cache[sector] = sector_data
         return jsonify(sector_data)
 
 
