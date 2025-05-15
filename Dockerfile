@@ -27,5 +27,5 @@ COPY Procfile /app/
 # Expose port
 EXPOSE 8000
 
-# Run the application with gunicorn using the wsgi entry point
-CMD ["gunicorn", "wsgi:app", "--bind", "0.0.0.0:8000", "--workers", "4"]
+# Run the application with waitress using the wsgi entry point
+CMD ["python", "wsgi.py"]

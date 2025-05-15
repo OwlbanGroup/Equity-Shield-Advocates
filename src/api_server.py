@@ -5,7 +5,7 @@ from werkzeug.exceptions import NotFound
 import logging
 import re
 from functools import wraps
-from bank_communication import get_account_info, validate_routing_number, initiate_transfer
+from src.bank_communication import get_account_info, validate_routing_number, initiate_transfer
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -22,24 +22,33 @@ def require_api_key(f):
     return decorated_function
 
 
+_corporate_structure_cache = None
+_real_assets_cache = None
+
 def load_corporate_structure():
+    global _corporate_structure_cache
+    if _corporate_structure_cache is not None:
+        return _corporate_structure_cache
     json_path = os.path.join(os.path.dirname(__file__), '../data/corporate_structure.json')
     if not os.path.exists(json_path):
         json_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../data/corporate_structure.json'))
         if not os.path.exists(json_path):
             raise FileNotFoundError(f"Data file not found: {json_path}")
     with open(json_path, 'r') as f:
-        data = json.load(f)
-    return data
+        _corporate_structure_cache = json.load(f)
+    return _corporate_structure_cache
 
 
 def load_real_assets():
+    global _real_assets_cache
+    if _real_assets_cache is not None:
+        return _real_assets_cache
     real_assets_file = os.path.join(os.path.dirname(__file__), '../data/real_assets_under_management.json')
     if not os.path.exists(real_assets_file):
         return []
     with open(real_assets_file, 'r') as f:
-        data = json.load(f)
-    return data
+        _real_assets_cache = json.load(f)
+    return _real_assets_cache
 
 
 def load_corporate_data():
