@@ -60,5 +60,37 @@
             "market_cap": 60646293504,
             "revenue": 5994220032
         }
+    ],
+    "E COMERICE AND THE STAY IN YOUR HOME PROGRAM": [
+        {
+            "company": "Equity Shield Advocates",
+            "ticker": "EQH",
+            "market_cap": 16489000000,
+            "revenue": 500000000
+        }
+    ],
+    "South African Real Estate": [
+        {
+            "company": "Oasia Crescent Property Fund South Africa",
+            "ticker": "OAS",
+            "market_cap": 1200000000,
+            "revenue": 80000000
+        }
+    ],
+    "Energy": [
+        {
+            "company": "Oasia Petroleum",
+            "ticker": "OASPQ",
+            "market_cap": 900000000,
+            "revenue": 70000000
+        }
+    ],
+    "South African Market": [
+        {
+            "company": "JSE OAS",
+            "ticker": "JSEOAS",
+            "market_cap": 1500000000,
+            "revenue": 100000000
+        }
     ]
 }

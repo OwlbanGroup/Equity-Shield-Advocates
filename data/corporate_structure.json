@@ -34,5 +34,40 @@
       "ticker": "PFE",
       "description": "Pharmaceutical company developing medicines and vaccines."
     }
+  ],
+  "E COMERICE AND THE STAY IN YOUR HOME PROGRAM": [
+    {
+      "name": "Equity Shield Advocates",
+      "ticker": "EQH",
+      "description": "Equity Shield Advocates is a company focused on e-commerce and home-based programs."
+    }
+  ],
+  "South African Real Estate": [
+    {
+      "name": "Oasia Crescent Property Fund South Africa",
+      "ticker": "OAS",
+      "description": "A South African real estate investment fund."
+    }
+  ],
+  "Energy": [
+    {
+      "name": "Oasia Petroleum",
+      "ticker": "OASPQ",
+      "description": "An energy company specializing in petroleum products."
+    }
+  ],
+  "South African Market": [
+    {
+      "name": "JSE OAS",
+      "ticker": "JSEOAS",
+      "description": "A South African stock market index or entity."
+    }
+  ],
+  "Real Estate": [
+    {
+      "name": "Simon Property Group, Inc.",
+      "ticker": "SPG",
+      "description": "A real estate investment trust (REIT) specializing in shopping malls."
+    }
   ]
 }

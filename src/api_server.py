@@ -75,9 +75,53 @@ def get_real_assets():
     data = load_real_assets()
     return jsonify(data)
 
-if __name__ == '__main__':
-    app.run(debug=True)
+import os
+import json
+from flask import jsonify
+
+CORPORATE_DATA_FILE = os.path.join(os.path.dirname(__file__), '../data/corporate_data.json')
+
+def load_corporate_data():
+    if not os.path.exists(CORPORATE_DATA_FILE):
+        return {}
+    with open(CORPORATE_DATA_FILE, 'r') as f:
+        return json.load(f)
+
+@app.route('/api/banking-info', methods=['GET'])
+def get_banking_info():
+    data = load_corporate_data()
+    routing_number = None
+    account_number = None
+    ein_number = None
+
+    # Extract routing number for Capetain Cetriva
+    banking_arm = data.get('Fund Overview', '')
+    # The routing number is in the text, so we parse it
+    import re
+    routing_match = re.search(r'Routing Number:\s*(\d+)', banking_arm)
+    if routing_match:
+        routing_number = routing_match.group(1)
+
+    # Extract EIN number
+    ein_match = re.search(r'EIN Number:\s*([\d\-]+)', banking_arm)
+    if ein_match:
+        ein_number = ein_match.group(1)
+
+    # Extract account number for David Leeper
+    executive_summary = data.get('Executive Summary', '')
+    account_match = re.search(r'Account Number:\s*(\d+)', executive_summary)
+    if account_match:
+        account_number = account_match.group(1)
+
+    return jsonify({
+        'routing_number': routing_number,
+        'account_number': account_number,
+        'ein_number': ein_number
+    })
 
 @app.route('/api/test-404', methods=['GET'])
 def test_404():
     raise NotFound("Test 404 error")
+
+if __name__ == '__main__':
+    app.run(debug=True)
