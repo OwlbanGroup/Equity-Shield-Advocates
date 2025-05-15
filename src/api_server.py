@@ -1,15 +1,25 @@
-from flask import Flask, jsonify, make_response, redirect
+from flask import Flask, jsonify, make_response, redirect, request
 import json
 import os
 from werkzeug.exceptions import NotFound
 import logging
 import re
-
+from functools import wraps
+from bank_communication import get_account_info, validate_routing_number, initiate_transfer
 
 logging.basicConfig(level=logging.DEBUG)
 
+# Simple API key for demonstration purposes
+API_KEY = "secret-api-key"
 
-# Module-level functions for data loading to allow patching in tests
+def require_api_key(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        key = request.headers.get('X-API-KEY')
+        if key != API_KEY:
+            return jsonify({"error": "Unauthorized"}), 401
+        return f(*args, **kwargs)
+    return decorated_function
 
 
 def load_corporate_structure():
@@ -168,6 +178,42 @@ def create_app():
     @app.route('/api/test-404', methods=['GET'])
     def test_404():
         raise NotFound("Test 404 error")
+
+    # New endpoints for inter-bank communication
+
+    @app.route('/api/banks/<bank_name>/account', methods=['GET'])
+    @require_api_key
+    def get_bank_account(bank_name):
+        account_info = get_account_info(bank_name)
+        if account_info:
+            return jsonify(account_info)
+        else:
+            return jsonify({"error": f"Bank '{bank_name}' not found"}), 404
+
+    @app.route('/api/banks/validate-routing', methods=['POST'])
+    @require_api_key
+    def validate_routing():
+        data = request.get_json()
+        routing_number = data.get('routing_number')
+        if not routing_number:
+            return jsonify({"error": "routing_number is required"}), 400
+        is_valid = validate_routing_number(routing_number)
+        return jsonify({"routing_number": routing_number, "valid": is_valid})
+
+    @app.route('/api/banks/transfer', methods=['POST'])
+    @require_api_key
+    def transfer():
+        data = request.get_json()
+        from_bank = data.get('from_bank')
+        to_bank = data.get('to_bank')
+        amount = data.get('amount')
+        currency = data.get('currency', 'USD')
+
+        if not from_bank or not to_bank or not amount:
+            return jsonify({"error": "from_bank, to_bank, and amount are required"}), 400
+
+        transfer_result = initiate_transfer(from_bank, to_bank, amount, currency)
+        return jsonify(transfer_result)
 
 
     return app
