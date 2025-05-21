@@ -19,6 +19,6 @@ if ($authStatus -match "You are not logged in") {
 
 # Step 3: Trigger the CI/CD workflow on the main branch
 Write-Host "Triggering CI/CD workflow..."
-gh workflow run ci-cd-updated.yml -f ref=main
+gh workflow run ci-cd.yml -f ref=main
 
 Write-Host "Deployment triggered. Monitor the GitHub Actions workflow for progress."

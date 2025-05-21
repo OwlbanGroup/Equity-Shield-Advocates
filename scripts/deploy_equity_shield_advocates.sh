@@ -14,7 +14,7 @@ fi
 
 # Step 2: Trigger the CI/CD workflow on the main branch
 echo "Triggering CI/CD workflow..."
-gh workflow run ci-cd-updated.yml -f ref=main
+gh workflow run ci-cd.yml -f ref=main
 
 echo "Deployment triggered. Monitor the GitHub Actions workflow for progress."
 
