@@ -4,11 +4,12 @@ from unittest.mock import patch
 import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from src.api_server import create_app
+from src.api_server import app
+
 
 class IntegrationTestCase(unittest.TestCase):
     def setUp(self):
-        self.app = create_app().test_client()
+        self.app = app.test_client()
         self.app.testing = True
 
     def test_full_corporate_structure_flow(self):

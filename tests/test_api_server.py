@@ -21,7 +21,7 @@ class ApiServerTestCase(unittest.TestCase):
 
     def test_get_corporate_data(self):
         """Test corporate data endpoint"""
-        response = self.app.get('/api/v1/corporate-data')
+        response = self.app.get('/api/v1/corporate-data', headers={"X-API-KEY": "secret-api-key"})
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.data)
         self.assertEqual(data['status'], 'success')

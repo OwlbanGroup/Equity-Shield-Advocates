@@ -6,11 +6,11 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../src'
 import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
-from api_server import create_app
+from src.api_server import app
+import pytest
 
 @pytest.fixture
 def client():
-    app = create_app()
     app.config['TESTING'] = True
     client = app.test_client()
     yield client

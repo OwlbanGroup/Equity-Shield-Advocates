@@ -1,134 +1,127 @@
 # Test script for production deployment verification
 param(
-    [Parameter(Mandatory=$true)]
-    [string]$SharePointSiteUrl,
-    
-    [string]$LibraryName = "Documents"
+    [string]$BaseUrl = "http://localhost:8000",
+    [string]$ApiKey = $env:API_KEY
 )
+
+$ErrorActionPreference = "Stop"
 
 function Write-TestResult {
     param(
         [string]$TestName,
-        [bool]$Success,
-        [string]$Message = ""
+        [bool]$Success
     )
-    
     if ($Success) {
         Write-Host "✓ $TestName" -ForegroundColor Green
     } else {
         Write-Host "✗ $TestName" -ForegroundColor Red
-        if ($Message) {
-            Write-Host "  $Message" -ForegroundColor Red
-        }
     }
 }
 
-function Test-ProductionEnvironment {
-    Write-Host "`nTesting Production Environment..." -ForegroundColor Blue
+function Test-Endpoint {
+    param(
+        [string]$Endpoint,
+        [string]$Method = "GET",
+        [hashtable]$Headers = @{},
+        [int]$ExpectedStatus = 200
+    )
     
     try {
-        # Test PowerShell version
-        $psVersion = $PSVersionTable.PSVersion
-        $psVersionOk = $psVersion.Major -ge 5
-        Write-TestResult "PowerShell version" $psVersionOk "Version: $psVersion"
-        
-        # Test PnP.PowerShell module
-        $pnpModule = Get-Module -ListAvailable -Name PnP.PowerShell
-        Write-TestResult "PnP.PowerShell module" ($null -ne $pnpModule) "Version: $($pnpModule.Version)"
-        
-        # Test scheduled task existence
-        $task = Get-ScheduledTask -TaskName "EquityShield_AutoUpload" -ErrorAction SilentlyContinue
-        Write-TestResult "Scheduled task" ($null -ne $task) "Status: $($task.State)"
-        
-        # Return overall status
-        return $psVersionOk -and ($null -ne $pnpModule) -and ($null -ne $task)
-    }
-    catch {
-        Write-TestResult "Production environment" $false $_.Exception.Message
+        $response = Invoke-WebRequest -Uri "$BaseUrl$Endpoint" -Method $Method -Headers $Headers -UseBasicParsing
+        return $response.StatusCode -eq $ExpectedStatus
+    } catch {
+        Write-Host "Error testing endpoint $Endpoint : $_" -ForegroundColor Red
         return $false
     }
 }
 
-function Test-SharePointAccess {
-    Write-Host "`nTesting SharePoint Access..." -ForegroundColor Blue
-    
-    try {
-        # Test connection
-        Connect-PnPOnline -Url $SharePointSiteUrl -DeviceLogin -ErrorAction Stop
-        Write-TestResult "SharePoint connection" $true
-        
-        # Test library access
-        $library = Get-PnPList -Identity $LibraryName -ErrorAction Stop
-        Write-TestResult "Library access" ($null -ne $library) "Library: $LibraryName"
-        
-        # Test file operations
-        $testFile = "production_test.txt"
-        Set-Content $testFile "Test content"
-        
-        try {
-            Add-PnPFile -Path $testFile -Folder $LibraryName -ErrorAction Stop
-            Write-TestResult "File upload" $true
-            
-            Remove-PnPFile -ServerRelativeUrl "$LibraryName/$testFile" -Force -ErrorAction Stop
-            Write-TestResult "File deletion" $true
-            
-            return $true
-        }
-        finally {
-            Remove-Item $testFile -Force -ErrorAction SilentlyContinue
-        }
-    }
-    catch {
-        Write-TestResult "SharePoint access" $false $_.Exception.Message
-        return $false
-    }
+function Test-LogFileAccess {
+    $logPath = "/var/log/equity-shield/production.log"
+    return Test-Path $logPath
 }
 
-function Test-AutomatedSync {
-    Write-Host "`nTesting Automated Sync..." -ForegroundColor Blue
-    
-    try {
-        # Create test file
-        $testFile = "sync_test.json"
-        Set-Content $testFile '{"test": "automated sync"}'
-        
-        # Run sync script
-        $scriptPath = Join-Path $PSScriptRoot "Sync-CorporateStructure-To-SharePoint.ps1"
-        $syncSuccess = & $scriptPath -SharePointSiteUrl $SharePointSiteUrl -LocalFilePath1 $testFile
-        Write-TestResult "Automated sync" $syncSuccess
-        
-        # Verify file exists in SharePoint
-        $file = Get-PnPFile -Url "$LibraryName/$testFile" -ErrorAction SilentlyContinue
-        $fileExists = $null -ne $file
-        Write-TestResult "File verification" $fileExists
-        
-        # Cleanup
-        if ($fileExists) {
-            Remove-PnPFile -ServerRelativeUrl "$LibraryName/$testFile" -Force -ErrorAction SilentlyContinue
-        }
-        Remove-Item $testFile -Force -ErrorAction SilentlyContinue
-        
-        return $syncSuccess -and $fileExists
-    }
-    catch {
-        Write-TestResult "Automated sync" $false $_.Exception.Message
-        return $false
-    }
-}
+# Initialize test results
+$allTestsPassed = $true
 
-# Run all tests
-Write-Host "Starting Production Deployment Tests" -ForegroundColor Yellow
+Write-Host "`nStarting Production Deployment Tests" -ForegroundColor Yellow
 Write-Host "=================================" -ForegroundColor Yellow
 
-$envOk = Test-ProductionEnvironment
-$accessOk = Test-SharePointAccess
-$syncOk = Test-AutomatedSync
+# Test 1: Health Check
+$healthCheck = Test-Endpoint -Endpoint "/health"
+Write-TestResult "Health Check Endpoint" $healthCheck
+$allTestsPassed = $allTestsPassed -and $healthCheck
 
-# Overall status
-$allTestsPassed = $envOk -and $accessOk -and $syncOk
+# Test 2: API Authentication
+$headers = @{
+    "X-API-Key" = $ApiKey
+    "Content-Type" = "application/json"
+}
+$authTest = Test-Endpoint -Endpoint "/api/v1/status" -Headers $headers
+Write-TestResult "API Authentication" $authTest
+$allTestsPassed = $allTestsPassed -and $authTest
+
+# Test 3: CORS Headers
+$corsTest = $true
+try {
+    $response = Invoke-WebRequest -Uri "$BaseUrl/health" -Method OPTIONS -UseBasicParsing
+    $corsHeaders = @(
+        "Access-Control-Allow-Origin",
+        "Access-Control-Allow-Methods",
+        "Access-Control-Allow-Headers"
+    )
+    foreach ($header in $corsHeaders) {
+        if (-not $response.Headers.ContainsKey($header)) {
+            $corsTest = $false
+            break
+        }
+    }
+} catch {
+    $corsTest = $false
+}
+Write-TestResult "CORS Headers" $corsTest
+$allTestsPassed = $allTestsPassed -and $corsTest
+
+# Test 4: Security Headers
+$securityTest = $true
+try {
+    $response = Invoke-WebRequest -Uri "$BaseUrl/health" -Method GET -UseBasicParsing
+    $securityHeaders = @(
+        "Strict-Transport-Security",
+        "X-Content-Type-Options",
+        "X-Frame-Options",
+        "X-XSS-Protection"
+    )
+    foreach ($header in $securityHeaders) {
+        if (-not $response.Headers.ContainsKey($header)) {
+            $securityTest = $false
+            break
+        }
+    }
+} catch {
+    $securityTest = $false
+}
+Write-TestResult "Security Headers" $securityTest
+$allTestsPassed = $allTestsPassed -and $securityTest
+
+# Test 5: Log File Access
+$logTest = Test-LogFileAccess
+Write-TestResult "Log File Access" $logTest
+$allTestsPassed = $allTestsPassed -and $logTest
+
+# Test 6: Rate Limiting
+$rateLimitTest = $true
+try {
+    for ($i = 1; $i -le 61; $i++) {
+        $response = Invoke-WebRequest -Uri "$BaseUrl/health" -Method GET -UseBasicParsing
+    }
+    $rateLimitTest = $false  # Should have been rate limited
+} catch {
+    $rateLimitTest = $_.Exception.Response.StatusCode -eq 429
+}
+Write-TestResult "Rate Limiting" $rateLimitTest
+$allTestsPassed = $allTestsPassed -and $rateLimitTest
+
 Write-Host "`nOverall Test Status:" -ForegroundColor Yellow
-Write-TestResult "Production deployment" $allTestsPassed
-
 if ($allTestsPassed) {
     Write-Host "`nProduction deployment verified successfully!" -ForegroundColor Green
     exit 0
