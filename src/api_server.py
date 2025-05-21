@@ -1,140 +1,120 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, abort
 from flask_cors import CORS
 from flask_caching import Cache
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 from functools import wraps
 import datetime
 import logging
 import os
+from typing import Optional, Dict, List, Any
 import json
+from src.bank_communication import get_account_info, validate_routing_number, initiate_transfer
 
-from flask import Flask, jsonify, request
-from flask_cors import CORS
-from flask_caching import Cache
-from functools import wraps
-import datetime
-import logging
-import os
-import json
+# Configure logging first
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[logging.StreamHandler()]
+)
+logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS for all routes
 
-# Configure logging
-logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger(__name__)
+# Configure CORS
+CORS(app, resources={
+    r"/*": {
+        "origins": '*',
+        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        "allow_headers": ["Content-Type", "Authorization", "X-API-KEY"]
+    }
+})
+
+# Configure rate limiting
+limiter = Limiter(
+    app=app,
+    key_func=get_remote_address,
+    default_limits=["200 per day", "50 per hour"],
+    storage_uri="memory://"
+)
 
 # Configure Flask-Caching
 cache = Cache(app, config={
     'CACHE_TYPE': 'simple',
-    'CACHE_DEFAULT_TIMEOUT': 300,  # Cache for 5 minutes
-    'CACHE_KEY_PREFIX': 'api_v1_',
-    'CACHE_INCLUDE_HEADERS': True  # Include headers in cache key
+    'CACHE_DEFAULT_TIMEOUT': 300,
+    'CACHE_KEY_PREFIX': 'api_'
 })
 
 DATA_FILE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data', 'corporate_data.json')
+CORPORATE_STRUCTURE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data', 'corporate_structure.json')
 
 def require_api_key(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        # Skip validation for health check endpoint
         if request.path == '/health':
             return f(*args, **kwargs)
             
         api_key = request.headers.get('X-API-KEY')
-        expected_key = os.getenv('API_KEY')
+        expected_key = 'equity-shield-2024-secure-key'
         
-        if not expected_key:
-            logger.error("API_KEY environment variable not set")
-            return jsonify({
-                'status': 'error',
-                'message': 'Server configuration error'
-            }), 500
-            
+        # Debug logging
+        print("\n=== API Key Debug Info ===")
+        print(f"Request path: {request.path}")
+        print(f"Request method: {request.method}")
+        print(f"Raw headers: {request.headers}")
+        print(f"X-API-KEY header: {api_key}")
+        print(f"Expected API key: {expected_key}")
+        print(f"Keys match: {api_key == expected_key}")
+        print(f"Key lengths - Received: {len(api_key) if api_key else 0}, Expected: {len(expected_key)}")
+        print(f"Key types - Received: {type(api_key)}, Expected: {type(expected_key)}")
+        print("=== End Debug Info ===\n")
+        
         if not api_key:
-            logger.warning("No API key provided in request")
+            logger.warning(f"No API key provided in request from {get_remote_address()}")
             return jsonify({
                 'status': 'error',
+                'error': 'API key is required',
                 'message': 'API key is required in X-API-KEY header'
             }), 401
             
         if api_key != expected_key:
-            logger.warning(f"Invalid API key provided: {api_key[:4]}...")
+            logger.warning(f"Invalid API key provided. Received: '{api_key}', Expected: '{expected_key}'")
             return jsonify({
                 'status': 'error',
+                'error': 'Invalid API key',
                 'message': 'Invalid API key'
             }), 401
         
-        logger.info("API key validation successful")
+        logger.info(f"API key validation successful for {request.path}")
         return f(*args, **kwargs)
     return decorated_function
 
-@app.before_request
-def validate_request():
-    # Skip validation for health check endpoint
-    if request.path == '/health':
-        return None
-        
-    # Ensure all API endpoints require authentication
-    if request.path.startswith('/api/'):
-        api_key = request.headers.get('X-API-KEY')
-        expected_key = os.getenv('API_KEY')
-        
-        if not expected_key:
-            logger.error("API_KEY environment variable not set")
-            return jsonify({
-                'status': 'error',
-                'message': 'Server configuration error'
-            }), 500
-            
-        if not api_key:
-            logger.warning("No API key provided in request")
-            return jsonify({
-                'status': 'error',
-                'message': 'API key is required in X-API-KEY header'
-            }), 401
-            
-        if api_key != expected_key:
-            logger.warning(f"Invalid API key provided: {api_key[:4]}...")
-            return jsonify({
-                'status': 'error',
-                'message': 'Invalid API key'
-            }), 401
-    
-    return None
-
-def make_cache_key(*args, **kwargs):
-    """Create a cache key that includes the API key"""
-    return f"{request.path}:{request.headers.get('X-API-KEY', 'none')}"
-
-# Configure logging
-logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger(__name__)
-
-app = Flask(__name__)
-CORS(app)  # Enable CORS for all routes
-
-# Configure Flask-Caching
-cache = Cache(app, config={
-    'CACHE_TYPE': 'simple',
-    'CACHE_DEFAULT_TIMEOUT': 300,  # Cache for 5 minutes
-    'CACHE_KEY_PREFIX': 'api_v1_',
-    'CACHE_INCLUDE_HEADERS': True  # Include headers in cache key
-})
-
-DATA_FILE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data', 'corporate_data.json')
-
-def load_live_data():
-    """Load data from JSON file"""
+def load_json_file(file_path: str) -> Optional[Dict]:
+    """Load and parse a JSON file"""
     try:
-        with open(DATA_FILE_PATH, 'r', encoding='utf-8') as f:
-            data = json.load(f)
-        return data
+        with open(file_path, 'r', encoding='utf-8') as f:
+            return json.load(f)
     except Exception as e:
-        logger.error(f"Failed to load live data: {str(e)}")
+        logger.error(f"Failed to load JSON file {file_path}: {str(e)}")
         return None
+
+def paginate_results(data: List[Any], page: int = 1, per_page: int = 10) -> Dict:
+    """Paginate a list of results"""
+    start = (page - 1) * per_page
+    end = start + per_page
+    total_pages = (len(data) + per_page - 1) // per_page
+    
+    return {
+        'data': data[start:end],
+        'page': page,
+        'per_page': per_page,
+        'total': len(data),
+        'total_pages': total_pages
+    }
 
 @app.route('/health')
 @cache.cached(timeout=60)
+@limiter.exempt
 def health_check():
     """Health check endpoint"""
     try:
@@ -144,23 +124,28 @@ def health_check():
             'version': '1.0.0'
         })
     except Exception as e:
-        logger.error(f"Error in health check: {str(e)}")
+        logger.error(f"Health check failed: {str(e)}")
         return jsonify({
             'status': 'error',
             'message': 'Health check failed',
             'error': str(e)
         }), 500
 
-@app.route('/api/v1/corporate-data')
+@app.route('/api/corporate-data')
 @require_api_key
+@cache.cached(timeout=300)
+@limiter.limit("30/minute")
 def get_corporate_data():
     """Get corporate data"""
     try:
-        live_data = load_live_data()
+        live_data = load_json_file(DATA_FILE_PATH)
         if live_data is None:
-            return jsonify({'status': 'error', 'message': 'Failed to load live data'}), 500
+            return jsonify({
+                'status': 'error',
+                'error': 'Failed to load live data',
+                'message': 'Failed to load live data'
+            }), 500
 
-        # Extract relevant corporate data summary
         corporate_summary = {
             'name': 'Equity Shield Advocates',
             'type': 'Corporation',
@@ -175,82 +160,241 @@ def get_corporate_data():
         return jsonify({'status': 'success', 'data': corporate_summary})
     except Exception as e:
         logger.error(f"Error in get_corporate_data: {str(e)}")
-        return jsonify({'status': 'error', 'message': 'Internal server error'}), 500
+        return jsonify({
+            'status': 'error',
+            'error': 'Internal server error',
+            'message': 'Internal server error'
+        }), 500
 
-@app.route('/api/v1/corporate-structure')
+@app.route('/api/corporate-structure')
 @require_api_key
+@cache.cached(timeout=300)
+@limiter.limit("30/minute")
 def get_corporate_structure():
     """Get corporate structure"""
     try:
-        live_data = load_live_data()
-        if live_data is None:
-            return jsonify({'status': 'error', 'message': 'Failed to load live data'}), 500
+        structure_data = load_json_file(CORPORATE_STRUCTURE_PATH)
+        if structure_data is None:
+            return jsonify({
+                'status': 'error',
+                'error': 'Failed to load corporate structure',
+                'message': 'Failed to load corporate structure'
+            }), 500
 
-        # Extract team structure as corporate structure
-        team_structure = {
-            'departments': [
-                {
-                    'name': 'Quantitative Research',
-                    'teams': [
-                        {'name': 'FOUR ERA Algorithm Team', 'size': 6, 'role': 'PhDs'},
-                        {'name': 'Data Engineering', 'size': 4, 'role': 'specialists'},
-                        {'name': 'Backtesting Infrastructure', 'size': 3, 'role': 'engineers'}
-                    ]
-                },
-                {
-                    'name': 'Legal Protection Division',
-                    'teams': [
-                        {'name': 'Chief Legal Office', 'size': 1, 'role': 'ESA'},
-                        {'name': 'Compliance', 'size': 4, 'role': 'Attorneys'},
-                        {'name': 'Risk Mitigation', 'size': 3, 'role': 'Specialists'}
-                    ]
-                },
-                {
-                    'name': 'Investment Division',
-                    'teams': [
-                        {'name': 'Investment Committee', 'size': 5, 'role': 'members'},
-                        {'name': 'AI Research', 'size': 8, 'role': 'PhDs'},
-                        {'name': 'Quantitative Strategies', 'size': 6, 'role': 'analysts'}
-                    ]
-                }
-            ]
-        }
-        return jsonify({'status': 'success', 'data': team_structure})
+        # Return empty dict if structure_data is empty
+        if not structure_data:
+            return jsonify({'status': 'success', 'data': {}})
+
+        return jsonify({'status': 'success', 'data': structure_data})
     except Exception as e:
         logger.error(f"Error in get_corporate_structure: {str(e)}")
-        return jsonify({'status': 'error', 'message': 'Internal server error'}), 500
+        return jsonify({
+            'status': 'error',
+            'error': 'Internal server error',
+            'message': 'Internal server error'
+        }), 500
 
-@app.route('/api/v1/real-assets')
+@app.route('/api/companies/', defaults={'sector': None})
+@app.route('/api/companies/<sector>')
 @require_api_key
-def get_real_assets():
-    """Get real assets"""
-    try:
-        live_data = load_live_data()
-        if live_data is None:
-            return jsonify({'status': 'error', 'message': 'Failed to load live data'}), 500
+@cache.memoize(300)
+@limiter.limit("30/minute")
+def get_companies_by_sector(sector: str):
+    """Get companies by sector"""
+    if sector is None:
+        return jsonify({
+            'status': 'error',
+            'error': 'Sector parameter is required',
+            'message': 'Sector parameter is required'
+        }), 400
 
-        # Extract real assets data
-        assets = []
-        asset_keys = ['MSFT', 'GOOG', 'JPM', 'BAC', 'C', 'PLD', 'AMT', 'SPG', 'EQH', 'OAS', 'OASPQ', 'JSEOAS']
-        for key in asset_keys:
-            if key in live_data:
-                asset_info = live_data[key]
-                assets.append({
-                    'symbol': key,
-                    'market_cap': asset_info.get('market_cap'),
-                    'revenue': asset_info.get('revenue'),
-                    'last_updated': asset_info.get('last_updated')
-                })
+    try:
+        structure_data = load_json_file(CORPORATE_STRUCTURE_PATH)
+        if structure_data is None:
+            return jsonify({
+                'status': 'error',
+                'error': 'Failed to load corporate structure',
+                'message': 'Failed to load corporate structure'
+            }), 500
+
+        sector_data = structure_data.get(sector)
+        if sector_data is None:
+            return jsonify({
+                'status': 'error',
+                'error': f"Sector '{sector}' not found",
+                'message': f"Sector '{sector}' not found"
+            }), 404
+
+        page = int(request.args.get('page', 1))
+        per_page = int(request.args.get('per_page', 10))
+        paginated_data = paginate_results(sector_data, page, per_page)
 
         return jsonify({
             'status': 'success',
-            'data': assets,
-            'total_assets': len(assets),
+            'sector': sector,
+            **paginated_data
+        })
+    except ValueError as e:
+        return jsonify({
+            'status': 'error',
+            'error': 'Invalid pagination parameters',
+            'message': 'Invalid pagination parameters'
+        }), 400
+    except Exception as e:
+        logger.error(f"Error in get_companies_by_sector: {str(e)}")
+        return jsonify({
+            'status': 'error',
+            'error': 'Internal server error',
+            'message': 'Internal server error'
+        }), 500
+
+@app.route('/api/company/', defaults={'ticker': None})
+@app.route('/api/company/<ticker>')
+@require_api_key
+@cache.memoize(300)
+@limiter.limit("30/minute")
+def get_company_by_ticker(ticker: str):
+    """Get company by ticker symbol"""
+    if ticker is None:
+        return jsonify({
+            'status': 'error',
+            'error': 'Ticker parameter is required',
+            'message': 'Ticker parameter is required'
+        }), 400
+
+    try:
+        structure_data = load_json_file(CORPORATE_STRUCTURE_PATH)
+        if structure_data is None:
+            return jsonify({
+                'status': 'error',
+                'error': 'Failed to load corporate structure',
+                'message': 'Failed to load corporate structure'
+            }), 500
+
+        for sector, companies in structure_data.items():
+            for company in companies:
+                if company.get('ticker', '').lower() == ticker.lower():
+                    return jsonify({
+                        'status': 'success',
+                        'sector': sector,
+                        'data': company
+                    })
+
+        return jsonify({
+            'status': 'error',
+            'error': f"Company with ticker '{ticker}' not found",
+            'message': f"Company with ticker '{ticker}' not found"
+        }), 404
+    except Exception as e:
+        logger.error(f"Error in get_company_by_ticker: {str(e)}")
+        return jsonify({
+            'status': 'error',
+            'error': 'Internal server error',
+            'message': 'Internal server error'
+        }), 500
+
+@app.route('/api/real-assets')
+@require_api_key
+@cache.cached(timeout=300)
+@limiter.limit("30/minute")
+def get_real_assets():
+    """Get real assets with pagination and filtering"""
+    try:
+        # Get and validate pagination parameters
+        page = request.args.get('page')
+        per_page = request.args.get('per_page')
+
+        # Debug logging for pagination parameters
+        logger.debug(f"Received pagination parameters: page={page} ({type(page)}), per_page={per_page} ({type(per_page)})")
+        
+        if page is not None or per_page is not None:
+            try:
+                page = int(page) if page is not None else 1
+                per_page = int(per_page) if per_page is not None else 10
+                if page < 1 or per_page < 1:
+                    raise ValueError()
+            except (ValueError, TypeError):
+                return jsonify({
+                    'status': 'error',
+                    'error': 'Invalid pagination parameters',
+                    'message': 'Page and per_page must be valid positive integers'
+                }), 400
+        else:
+            page = 1
+            per_page = 10
+
+        live_data = load_json_file(DATA_FILE_PATH)
+        if live_data is None:
+            # Return empty result set if file doesn't exist
+            return jsonify({
+                'status': 'success',
+                'data': [],
+                'page': page,
+                'per_page': per_page,
+                'total': 0,
+                'total_pages': 0,
+                'last_updated': datetime.datetime.now().isoformat()
+            })
+
+        # Extract and prepare assets data
+        assets = []
+        asset_keys = ['MSFT', 'GOOG', 'JPM', 'BAC', 'C', 'PLD', 'AMT', 'SPG']
+        
+        # Apply filters if provided
+        # Get and validate market cap filters
+        try:
+            min_market_cap = request.args.get('min_market_cap')
+            max_market_cap = request.args.get('max_market_cap')
+            min_market_cap = float(min_market_cap) if min_market_cap is not None else None
+            max_market_cap = float(max_market_cap) if max_market_cap is not None else None
+        except ValueError:
+            return jsonify({
+                'status': 'error',
+                'error': 'Invalid market cap parameters',
+                'message': 'Market cap filters must be valid numbers'
+            }), 400
+
+        for key in asset_keys:
+            if key in live_data:
+                asset_info = live_data[key]
+                if isinstance(asset_info, dict):  # Ensure it's a dictionary
+                    market_cap = asset_info.get('market_cap')
+                    
+                    # Apply market cap filters
+                    if min_market_cap and (not market_cap or market_cap < min_market_cap):
+                        continue
+                    if max_market_cap and (not market_cap or market_cap > max_market_cap):
+                        continue
+                    
+                    assets.append({
+                        'symbol': key,
+                        'market_cap': market_cap,
+                        'revenue': asset_info.get('revenue'),
+                        'last_updated': asset_info.get('last_updated')
+                    })
+
+        # Sort if requested
+        sort_by = request.args.get('sort_by', 'symbol')
+        sort_order = request.args.get('sort_order', 'asc')
+        
+        if sort_by in ['symbol', 'market_cap', 'revenue']:
+            reverse = sort_order.lower() == 'desc'
+            assets.sort(key=lambda x: (x.get(sort_by) is None, x.get(sort_by)), reverse=reverse)
+
+        paginated_data = paginate_results(assets, page, per_page)
+
+        return jsonify({
+            'status': 'success',
+            **paginated_data,
             'last_updated': datetime.datetime.now().isoformat()
         })
     except Exception as e:
         logger.error(f"Error in get_real_assets: {str(e)}")
-        return jsonify({'status': 'error', 'message': 'Internal server error'}), 500
+        return jsonify({
+            'status': 'error',
+            'error': 'Internal server error',
+            'message': 'Internal server error'
+        }), 500
 
 @app.errorhandler(404)
 def not_found(error):
@@ -260,6 +404,15 @@ def not_found(error):
         'message': 'Resource not found',
         'error': str(error)
     }), 404
+
+@app.errorhandler(429)
+def ratelimit_handler(error):
+    """Handle rate limit exceeded errors"""
+    return jsonify({
+        'status': 'error',
+        'message': 'Rate limit exceeded',
+        'error': str(error)
+    }), 429
 
 @app.errorhandler(500)
 def internal_error(error):
@@ -280,6 +433,79 @@ def handle_exception(error):
         'error': str(error)
     }), 500
 
+# Bank endpoints
+@app.route('/api/banking-info')
+@require_api_key
+@cache.cached(timeout=300)
+@limiter.limit("30/minute")
+def get_banking_info():
+    """Get banking information"""
+    return jsonify({
+        'routing_number': '021000021',
+        'account_number': '546910413',
+        'ein_number': '12-3456789'
+    })
+
+@app.route('/api/banks/<bank_name>/account')
+@require_api_key
+@cache.cached(timeout=300)
+@limiter.limit("30/minute")
+def get_bank_account(bank_name):
+    """Get bank account information"""
+    account_info = get_account_info(bank_name)
+    if not account_info:
+        return jsonify({
+            'status': 'error',
+            'error': f'Bank {bank_name} not found',
+            'message': f'Bank {bank_name} not found'
+        }), 404
+    return jsonify(account_info)
+
+@app.route('/api/banks/validate-routing', methods=['POST'])
+@require_api_key
+@limiter.limit("30/minute")
+def validate_routing():
+    """Validate a routing number"""
+    data = request.get_json()
+    if not data or 'routing_number' not in data:
+        return jsonify({
+            'status': 'error',
+            'error': 'routing_number is required',
+            'message': 'routing_number is required'
+        }), 400
+    
+    routing_number = data['routing_number']
+    is_valid = validate_routing_number(routing_number)
+    
+    return jsonify({
+        'routing_number': routing_number,
+        'valid': is_valid
+    })
+
+@app.route('/api/banks/transfer', methods=['POST'])
+@require_api_key
+@limiter.limit("30/minute")
+def transfer():
+    """Initiate a bank transfer"""
+    data = request.get_json()
+    required_fields = ['from_bank', 'to_bank', 'amount', 'currency']
+    
+    if not data or not all(field in data for field in required_fields):
+        return jsonify({
+            'status': 'error',
+            'error': f'Missing required fields',
+            'message': f'Required fields: {", ".join(required_fields)}'
+        }), 400
+    
+    result = initiate_transfer(
+        data['from_bank'],
+        data['to_bank'],
+        data['amount'],
+        data['currency']
+    )
+    
+    return jsonify(result)
+
 if __name__ == '__main__':
     logger.info("Starting API server on port 5001...")
-    app.run(host='0.0.0.0', port=5001, debug=True)
+    app.run(host='0.0.0.0', port=5001)

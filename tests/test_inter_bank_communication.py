@@ -15,7 +15,7 @@ def client():
     client = app.test_client()
     yield client
 
-API_KEY = "secret-api-key"
+API_KEY = "equity-shield-2024-secure-key"
 HEADERS = {"X-API-KEY": API_KEY}
 
 def test_get_bank_account_success(client):

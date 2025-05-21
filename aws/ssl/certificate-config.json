@@ -1,0 +1,109 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Resources": {
+        "Certificate": {
+            "Type": "AWS::CertificateManager::Certificate",
+            "Properties": {
+                "DomainName": "api.equity-shield-advocates.com",
+                "SubjectAlternativeNames": [
+                    "*.equity-shield-advocates.com"
+                ],
+                "ValidationMethod": "DNS",
+                "Tags": [
+                    {
+                        "Key": "Environment",
+                        "Value": "Production"
+                    },
+                    {
+                        "Key": "Project",
+                        "Value": "Equity Shield API"
+                    }
+                ]
+            }
+        },
+        "LoadBalancer": {
+            "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+            "Properties": {
+                "Name": "equity-shield-alb",
+                "Scheme": "internet-facing",
+                "SecurityGroups": [
+                    {"Ref": "ECSSecurityGroup"}
+                ],
+                "Subnets": {"Ref": "PublicSubnets"},
+                "Type": "application",
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "equity-shield-alb"
+                    }
+                ]
+            }
+        },
+        "HttpsListener": {
+            "Type": "AWS::ElasticLoadBalancingV2::Listener",
+            "Properties": {
+                "LoadBalancerArn": {"Ref": "LoadBalancer"},
+                "Port": 443,
+                "Protocol": "HTTPS",
+                "Certificates": [
+                    {
+                        "CertificateArn": {"Ref": "Certificate"}
+                    }
+                ],
+                "DefaultActions": [
+                    {
+                        "Type": "forward",
+                        "TargetGroupArn": {"Ref": "DefaultTargetGroup"}
+                    }
+                ]
+            }
+        },
+        "HttpListener": {
+            "Type": "AWS::ElasticLoadBalancingV2::Listener",
+            "Properties": {
+                "LoadBalancerArn": {"Ref": "LoadBalancer"},
+                "Port": 80,
+                "Protocol": "HTTP",
+                "DefaultActions": [
+                    {
+                        "Type": "redirect",
+                        "RedirectConfig": {
+                            "Protocol": "HTTPS",
+                            "Port": "443",
+                            "StatusCode": "HTTP_301"
+                        }
+                    }
+                ]
+            }
+        },
+        "DefaultTargetGroup": {
+            "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+            "Properties": {
+                "Name": "equity-shield-tg",
+                "Port": 5001,
+                "Protocol": "HTTP",
+                "TargetType": "ip",
+                "VpcId": {"Ref": "VPC"},
+                "HealthCheckPath": "/health",
+                "HealthCheckProtocol": "HTTP",
+                "HealthCheckIntervalSeconds": 30,
+                "HealthCheckTimeoutSeconds": 5,
+                "HealthyThresholdCount": 2,
+                "UnhealthyThresholdCount": 3,
+                "Matcher": {
+                    "HttpCode": "200"
+                }
+            }
+        }
+    },
+    "Outputs": {
+        "LoadBalancerDNS": {
+            "Description": "DNS name of the load balancer",
+            "Value": {"Fn::GetAtt": ["LoadBalancer", "DNSName"]}
+        },
+        "CertificateArn": {
+            "Description": "ARN of the SSL certificate",
+            "Value": {"Ref": "Certificate"}
+        }
+    }
+}

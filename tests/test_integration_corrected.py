@@ -11,9 +11,10 @@ class IntegrationTestCase(unittest.TestCase):
     def setUp(self):
         self.app = app.test_client()
         self.app.testing = True
+        self.headers = {'X-API-KEY': 'equity-shield-2024-secure-key'}
 
     def test_full_corporate_structure_flow(self):
-        response = self.app.get('/api/corporate-structure')
+        response = self.app.get('/api/corporate-structure', headers=self.headers)
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.data)
         self.assertIsInstance(data, dict)
@@ -21,7 +22,7 @@ class IntegrationTestCase(unittest.TestCase):
         sectors = list(data.keys())
         if sectors:
             sector = sectors[0]
-            response = self.app.get(f'/api/companies/{sector}')
+            response = self.app.get(f'/api/companies/{sector}', headers=self.headers)
             self.assertIn(response.status_code, [200, 404])
             if response.status_code == 200:
                 companies = json.loads(response.data)
@@ -29,26 +30,35 @@ class IntegrationTestCase(unittest.TestCase):
                 if companies:
                     ticker = companies[0].get('ticker')
                     if ticker:
-                        response = self.app.get(f'/api/company/{ticker}')
+                        response = self.app.get(f'/api/company/{ticker}', headers=self.headers)
                         self.assertIn(response.status_code, [200, 404])
                         if response.status_code == 200:
                             company = json.loads(response.data)
                             self.assertIsInstance(company, dict)
 
     def test_real_assets_flow(self):
-        response = self.app.get('/api/real-assets')
+        response = self.app.get('/api/real-assets', headers=self.headers)
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.data)
-        self.assertIsInstance(data, list)
+        self.assertEqual(data['status'], 'success')
+        self.assertIn('data', data)
+        self.assertIsInstance(data['data'], list)
+        self.assertIn('page', data)
+        self.assertIn('per_page', data)
+        self.assertIn('total', data)
+        self.assertIn('total_pages', data)
 
-    @patch('src.api_server.load_corporate_structure', return_value={})
+    @patch('src.api_server.load_json_file')
     def test_edge_case_empty_corporate_structure(self, mock_load):
-        response = self.app.get('/api/corporate-structure')
+        mock_load.return_value = {}
+        response = self.app.get('/api/corporate-structure', headers=self.headers)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(json.loads(response.data), {})
+        data = json.loads(response.data)
+        self.assertEqual(data['status'], 'success')
+        self.assertEqual(data['data'], {})
 
     def test_edge_case_invalid_sector(self):
-        response = self.app.get('/api/companies/InvalidSector')
+        response = self.app.get('/api/companies/InvalidSector', headers=self.headers)
         self.assertEqual(response.status_code, 404)
         try:
             data = json.loads(response.get_data(as_text=True))
@@ -59,7 +69,7 @@ class IntegrationTestCase(unittest.TestCase):
             self.fail("Response is not valid JSON or missing 'error' key")
 
     def test_edge_case_invalid_ticker(self):
-        response = self.app.get('/api/company/INVALID')
+        response = self.app.get('/api/company/INVALID', headers=self.headers)
         self.assertEqual(response.status_code, 404)
         try:
             data = json.loads(response.get_data(as_text=True))
@@ -70,15 +80,15 @@ class IntegrationTestCase(unittest.TestCase):
             self.fail("Response is not valid JSON or missing 'error' key")
 
     def test_edge_case_empty_sector(self):
-        response = self.app.get('/api/companies/')
+        response = self.app.get('/api/companies/', headers=self.headers)
         self.assertEqual(response.status_code, 400)
 
     def test_edge_case_empty_ticker(self):
-        response = self.app.get('/api/company/')
+        response = self.app.get('/api/company/', headers=self.headers)
         self.assertEqual(response.status_code, 400)
 
     def test_banking_info(self):
-        response = self.app.get('/api/banking-info')
+        response = self.app.get('/api/banking-info', headers=self.headers)
         print(f"DEBUG: /api/banking-info response status: {response.status_code}")
         print(f"DEBUG: /api/banking-info response data: {response.data.decode('utf-8')}")
         self.assertEqual(response.status_code, 200)

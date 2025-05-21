@@ -1,73 +1,30 @@
 {
-  "Technology": [
-    {
-      "name": "Microsoft Corporation",
-      "ticker": "MSFT",
-      "description": "Technology company specializing in software, hardware, and cloud services."
-    },
-    {
-      "name": "Apple Inc.",
-      "ticker": "AAPL",
-      "description": "Technology company known for consumer electronics and software."
-    }
-  ],
-  "Finance": [
-    {
-      "name": "JPMorgan Chase & Co.",
-      "ticker": "JPM",
-      "description": "Financial services company providing banking and investment services."
-    },
-    {
-      "name": "Goldman Sachs Group, Inc.",
-      "ticker": "GS",
-      "description": "Investment banking and financial services firm."
-    }
-  ],
-  "Healthcare": [
-    {
-      "name": "Johnson & Johnson",
-      "ticker": "JNJ",
-      "description": "Healthcare company producing pharmaceuticals and medical devices."
-    },
-    {
-      "name": "Pfizer Inc.",
-      "ticker": "PFE",
-      "description": "Pharmaceutical company developing medicines and vaccines."
-    }
-  ],
-  "E COMERICE AND THE STAY IN YOUR HOME PROGRAM": [
-    {
-      "name": "Equity Shield Advocates",
-      "ticker": "EQH",
-      "description": "Equity Shield Advocates is a company focused on e-commerce and home-based programs."
-    }
-  ],
-  "South African Real Estate": [
-    {
-      "name": "Oasia Crescent Property Fund South Africa",
-      "ticker": "OAS",
-      "description": "A South African real estate investment fund."
-    }
-  ],
-  "Energy": [
-    {
-      "name": "Oasia Petroleum",
-      "ticker": "OASPQ",
-      "description": "An energy company specializing in petroleum products."
-    }
-  ],
-  "South African Market": [
-    {
-      "name": "JSE OAS",
-      "ticker": "JSEOAS",
-      "description": "A South African stock market index or entity."
-    }
-  ],
-  "Real Estate": [
-    {
-      "name": "Simon Property Group, Inc.",
-      "ticker": "SPG",
-      "description": "A real estate investment trust (REIT) specializing in shopping malls."
-    }
-  ]
+    "Technology": [
+        {
+            "ticker": "MSFT",
+            "name": "Microsoft Corporation",
+            "description": "Global technology company...",
+            "market_position": "Leader in enterprise software and cloud services"
+        },
+        {
+            "ticker": "GOOG",
+            "name": "Alphabet Inc.",
+            "description": "Multinational technology company...",
+            "market_position": "Leader in internet services and AI"
+        }
+    ],
+    "Financial": [
+        {
+            "ticker": "JPM",
+            "name": "JPMorgan Chase & Co.",
+            "description": "Global financial services firm...",
+            "market_position": "Leading investment bank and financial services provider"
+        },
+        {
+            "ticker": "BAC",
+            "name": "Bank of America Corporation",
+            "description": "Multinational investment bank...",
+            "market_position": "Major retail and commercial banking provider"
+        }
+    ]
 }

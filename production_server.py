@@ -1,16 +1,13 @@
 import os
-import logging.config
 from waitress import serve
 from src.api_server import app
 from werkzeug.middleware.proxy_fix import ProxyFix
+import logging.config
+from logging.handlers import RotatingFileHandler
 from flask_cors import CORS
 
 # Configure logging
-import os
-import logging.config
-from logging.handlers import RotatingFileHandler
-
-log_file_path = os.getenv('LOG_FILE', 'production.log')
+log_file_path = os.getenv('LOG_FILE', '/var/log/equity-shield/api.log')
 log_dir = os.path.dirname(log_file_path)
 
 if log_dir and not os.path.exists(log_dir):
@@ -47,28 +44,23 @@ logging.config.dictConfig({
 logger = logging.getLogger(__name__)
 
 # Configure CORS
-cors_origins = os.getenv('CORS_ORIGINS', '').split(',')
-app.wsgi_app = CORS(app.wsgi_app, resources={
-    r"/*": {"origins": cors_origins}
+cors_origins = os.getenv('CORS_ORIGINS', '*').split(',')
+CORS(app, resources={
+    r"/*": {
+        "origins": cors_origins,
+        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        "allow_headers": ["Content-Type", "Authorization", "X-API-KEY"]
+    }
 })
 
 # Trust proxy headers
 app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 
-# Add security headers
-@app.after_request
-def add_security_headers(response):
-    response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
-    response.headers['X-Content-Type-Options'] = 'nosniff'
-    response.headers['X-Frame-Options'] = 'SAMEORIGIN'
-    response.headers['X-XSS-Protection'] = '1; mode=block'
-    return response
-
 if __name__ == '__main__':
     try:
         # Get configuration from environment
-        host = os.getenv('PRODUCTION_HOST', '0.0.0.0')
-        port = int(os.getenv('PRODUCTION_PORT', '8000'))
+        host = os.getenv('HOST', '0.0.0.0')
+        port = int(os.getenv('PORT', '5001'))
         threads = int(os.getenv('WAITRESS_THREADS', '4'))
         
         logger.info(f"Starting production server on {host}:{port} with {threads} threads")

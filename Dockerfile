@@ -1,52 +1,45 @@
-# Use official Python runtime as a parent image
+# Use Python 3.11 slim image as base
 FROM python:3.11-slim
 
 # Set environment variables
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
-ENV PYTHON_ENV production
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    FLASK_ENV=production \
+    FLASK_APP=production_server.py
 
-# Create non-root user
-RUN useradd -m -U appuser && \
-    mkdir -p /app /var/log/equity-shield /var/run/equity-shield && \
-    chown -R appuser:appuser /app /var/log/equity-shield /var/run/equity-shield
-
-# Set work directory
+# Create and set working directory
 WORKDIR /app
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    curl \
+    gcc \
+    python3-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Python dependencies
-COPY config/requirements.txt /app/
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+# Copy requirements first to leverage Docker cache
+COPY config/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy project files
-COPY --chown=appuser:appuser src /app/src
-COPY --chown=appuser:appuser data /app/data
-COPY --chown=appuser:appuser wsgi.py /app/
-COPY --chown=appuser:appuser Procfile /app/
+# Copy application code
+COPY . .
 
-# Create directory for health checks
-RUN mkdir -p /app/health && \
-    chown -R appuser:appuser /app/health
+# Create log directory
+RUN mkdir -p /var/log/equity-shield && \
+    chmod 755 /var/log/equity-shield
+
+# Create non-root user
+RUN useradd -m appuser && \
+    chown -R appuser:appuser /app /var/log/equity-shield
 
 # Switch to non-root user
 USER appuser
 
-# Expose port
-EXPOSE 8000
-
 # Health check
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:8000/health || exit 1
+    CMD curl -f http://localhost:${PORT:-5001}/health || exit 1
 
-# Volume configuration
-VOLUME ["/var/log/equity-shield", "/var/run/equity-shield"]
+# Expose port
+EXPOSE ${PORT:-5001}
 
-# Run the application with waitress using the wsgi entry point
-CMD ["python", "wsgi.py"]
+# Start production server
+CMD ["python", "production_server.py"]

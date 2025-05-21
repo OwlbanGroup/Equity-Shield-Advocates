@@ -31,12 +31,14 @@ class TestPerformanceAndEdgeCases(unittest.TestCase):
 
     def test_api_endpoints_edge_cases(self):
         client = app.test_client()
+        headers = {'X-API-KEY': 'equity-shield-2024-secure-key'}
+        
         # Invalid sector
-        response = client.get('/api/companies/InvalidSector')
+        response = client.get('/api/companies/InvalidSector', headers=headers)
         self.assertEqual(response.status_code, 404)
+        
         # Invalid ticker
-        response = client.get('/api/company/INVALID')
-        # The API returns 404 for invalid ticker, so test should expect 404
+        response = client.get('/api/company/INVALID', headers=headers)
         self.assertEqual(response.status_code, 404)
 
 if __name__ == '__main__':
