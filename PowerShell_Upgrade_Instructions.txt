@@ -1,0 +1,29 @@
+Manual PowerShell 7.4.6 Upgrade Instructions for Windows:
+
+1. Download the latest PowerShell installer:
+   - Visit the official PowerShell GitHub releases page:
+     https://github.com/PowerShell/PowerShell/releases
+   - Find the latest stable release (7.4.6 or later).
+   - Download the MSI installer for Windows (e.g., PowerShell-7.4.6-win-x64.msi).
+
+2. Run the MSI installer:
+   - Double-click the downloaded MSI file.
+   - Follow the installation wizard steps.
+   - Choose to add PowerShell to the PATH environment variable.
+   - Complete the installation.
+
+3. Restart your computer to ensure all environment variables are updated.
+
+4. Open the new PowerShell 7 console:
+   - Search for "PowerShell 7" or "pwsh" in the Start menu.
+   - Launch the PowerShell 7 terminal.
+
+5. Verify the version:
+   - Run the command: pwsh -Version
+   - It should display version 7.4.6 or later.
+
+6. Run your SharePoint sync script in the PowerShell 7 terminal:
+   - Use the command:
+     pwsh -ExecutionPolicy Bypass -File scripts/Sync-CorporateStructure-To-SharePoint.ps1 -SharePointSiteUrl "http://localhost:8000"
+
+If you encounter any issues during installation or running the script, please let me know.

@@ -3,7 +3,7 @@ import time
 import requests
 
 class ApiPerformanceTest(unittest.TestCase):
-    BASE_URL = "http://localhost:8000/api"  # Updated to local server URL for testing
+    BASE_URL = "http://localhost:5001/api"  # Updated to match running server port
 
     def test_corporate_structure_performance(self):
         start = time.time()

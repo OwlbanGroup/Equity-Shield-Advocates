@@ -10,89 +10,89 @@ class ApiServerTestCase(unittest.TestCase):
         self.app = app.test_client()
         self.app.testing = True
 
-    def test_get_corporate_structure(self):
-        response = self.app.get('/api/corporate-structure')
+    def test_health_check(self):
+        """Test health check endpoint"""
+        response = self.app.get('/health')
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.data)
-        self.assertIsInstance(data, dict)
+        self.assertEqual(data['status'], 'healthy')
+        self.assertIn('timestamp', data)
+        self.assertEqual(data['version'], '1.0.0')
 
-    def test_get_companies_by_sector_valid(self):
-        response = self.app.get('/api/companies/Technology')
-        # 200 or 404 depending on data presence
-        self.assertIn(response.status_code, [200, 404])
-        if response.status_code == 200:
-            data = json.loads(response.data)
-            self.assertIsInstance(data, list)
+    def test_get_corporate_data(self):
+        """Test corporate data endpoint"""
+        response = self.app.get('/api/v1/corporate-data')
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.data)
+        self.assertEqual(data['status'], 'success')
+        self.assertIn('data', data)
+        corporate_data = data['data']
+        self.assertIn('name', corporate_data)
+        self.assertIn('type', corporate_data)
+        self.assertIn('status', corporate_data)
+        self.assertIn('executive_summary', corporate_data)
+        self.assertIn('fund_overview', corporate_data)
+        self.assertIn('investment_strategy', corporate_data)
 
-    def test_get_companies_by_sector_invalid(self):
-        response = self.app.get('/api/companies/NonExistentSector')
-        self.assertEqual(response.status_code, 404)
-
-    def test_get_company_by_ticker_valid(self):
-        # Assuming 'MSFT' is a valid ticker in data
-        response = self.app.get('/api/company/MSFT')
-        # 200 or 404 depending on data presence
-        self.assertIn(response.status_code, [200, 404])
-        if response.status_code == 200:
-            data = json.loads(response.data)
-            self.assertIsInstance(data, dict)
-
-    def test_get_company_by_ticker_invalid(self):
-        response = self.app.get('/api/company/INVALIDTICKER')
-        self.assertEqual(response.status_code, 404)
+    def test_get_corporate_structure(self):
+        """Test corporate structure endpoint"""
+        response = self.app.get('/api/v1/corporate-structure')
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.data)
+        self.assertEqual(data['status'], 'success')
+        self.assertIn('data', data)
+        structure_data = data['data']
+        self.assertIn('departments', structure_data)
+        self.assertIsInstance(structure_data['departments'], list)
+        # Verify specific departments
+        department_names = [dept['name'] for dept in structure_data['departments']]
+        self.assertIn('Quantitative Research', department_names)
+        self.assertIn('Legal Protection Division', department_names)
+        self.assertIn('Investment Division', department_names)
 
     def test_get_real_assets(self):
-        response = self.app.get('/api/real-assets')
+        """Test real assets endpoint"""
+        response = self.app.get('/api/v1/real-assets')
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.data)
-        self.assertIsInstance(data, list)
+        self.assertEqual(data['status'], 'success')
+        self.assertIn('data', data)
+        self.assertIn('total_assets', data)
+        self.assertIn('last_updated', data)
+        assets = data['data']
+        self.assertIsInstance(assets, list)
+        if len(assets) > 0:
+            asset = assets[0]
+            self.assertIn('symbol', asset)
+            self.assertIn('market_cap', asset)
+            self.assertIn('revenue', asset)
+            self.assertIn('last_updated', asset)
 
-    def test_get_companies_by_sector_empty_string(self):
-        response = self.app.get('/api/companies/')
-        self.assertIn(response.status_code, [400, 404, 405])
-
-    def test_get_company_by_ticker_empty_string(self):
-        response = self.app.get('/api/company/')
-        self.assertIn(response.status_code, [400, 404, 405])
-
-    def test_get_company_by_ticker_case_insensitive(self):
-        # Assuming 'msft' lowercase ticker should work same as 'MSFT'
-        response_upper = self.app.get('/api/company/MSFT')
-        response_lower = self.app.get('/api/company/msft')
-        self.assertEqual(response_upper.status_code, response_lower.status_code)
-        if response_upper.status_code == 200:
-            self.assertEqual(json.loads(response_upper.data), json.loads(response_lower.data))
-
-    def test_get_companies_redirect(self):
-        response = self.app.get('/api/companies')
-        self.assertIn(response.status_code, [301, 302, 307])
-
-    def test_get_company_redirect(self):
-        response = self.app.get('/api/company')
-        self.assertIn(response.status_code, [301, 302, 307])
-
-    def test_get_banking_info(self):
-        response = self.app.get('/api/banking-info')
-        self.assertEqual(response.status_code, 200)
-        data = json.loads(response.data)
-        self.assertIsInstance(data, dict)
-
-    def test_get_banking_info_test(self):
-        response = self.app.get('/api/banking-info-test')
-        self.assertEqual(response.status_code, 200)
-        data = json.loads(response.data)
-        self.assertIsInstance(data, dict)
-
-    def test_ping(self):
-        response = self.app.get('/api/ping')
-        self.assertEqual(response.status_code, 200)
-        # Adjusted to expect JSON message response
-        data = json.loads(response.data)
-        self.assertEqual(data.get("message"), "pong")
-
-    def test_test_404(self):
-        response = self.app.get('/api/test-404')
+    def test_404_handling(self):
+        """Test 404 error handling"""
+        response = self.app.get('/api/nonexistent')
         self.assertEqual(response.status_code, 404)
+        data = json.loads(response.data)
+        self.assertEqual(data['status'], 'error')
+        self.assertIn('message', data)
+        self.assertEqual(data['message'], 'Resource not found')
+
+    def test_corporate_data_no_file(self):
+        """Test corporate data endpoint with missing file"""
+        # Temporarily rename the data file
+        original_path = app.config.get('DATA_FILE_PATH', '')
+        if os.path.exists(original_path):
+            temp_path = original_path + '.tmp'
+            os.rename(original_path, temp_path)
+            try:
+                response = self.app.get('/api/v1/corporate-data')
+                self.assertEqual(response.status_code, 500)
+                data = json.loads(response.data)
+                self.assertEqual(data['status'], 'error')
+                self.assertEqual(data['message'], 'Failed to load live data')
+            finally:
+                # Restore the file
+                os.rename(temp_path, original_path)
 
 if __name__ == '__main__':
     unittest.main()

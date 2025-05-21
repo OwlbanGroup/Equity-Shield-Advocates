@@ -6,63 +6,51 @@
     "AUM": "",
     "Risk Assessment": "- Key Risks:\n  - Model risk in AI predictions\n  - Liquidity constraints in alternatives\n  - Regulatory changes in digital assets\n- Mitigation Strategies:\n  - Continuous model validation\n  - 10% cash buffer\n  - Dedicated compliance officer",
     "MSFT": {
-        "market_cap": null,
-        "revenue": null,
-        "last_updated": "2025-05-16 13:59:45"
+        "market_cap": 3366494667000,
+        "revenue": 270010008000
     },
     "GOOG": {
-        "market_cap": null,
-        "revenue": null,
-        "last_updated": "2025-05-16 13:59:57"
+        "market_cap": 2014781243000,
+        "revenue": 359713014000
     },
     "JPM": {
-        "market_cap": null,
-        "revenue": null,
-        "last_updated": "2025-05-16 14:00:09"
+        "market_cap": 738237481000,
+        "revenue": 168713994000
     },
     "BAC": {
-        "market_cap": null,
-        "revenue": null,
-        "last_updated": "2025-05-16 14:00:21"
+        "market_cap": 336976314000,
+        "revenue": 97452999000
     },
     "C": {
-        "market_cap": null,
-        "revenue": null,
-        "last_updated": "2025-05-16 14:00:34"
+        "market_cap": 141144670000,
+        "revenue": 71819002000
     },
     "PLD": {
-        "market_cap": null,
-        "revenue": null,
-        "last_updated": "2025-05-16 14:00:46"
+        "market_cap": 99844841000,
+        "revenue": 8733704000
     },
     "AMT": {
-        "market_cap": null,
-        "revenue": null,
-        "last_updated": "2025-05-16 14:00:58"
+        "market_cap": 95734219000,
+        "revenue": 10177400000
     },
     "SPG": {
-        "market_cap": null,
-        "revenue": null,
-        "last_updated": "2025-05-16 14:01:10"
+        "market_cap": 60787261000,
+        "revenue": 5994220000
     },
     "EQH": {
-        "market_cap": null,
-        "revenue": null,
-        "last_updated": "2025-05-16 14:01:22"
+        "market_cap": 16319162000,
+        "revenue": 15105000000
     },
     "OAS": {
         "market_cap": null,
-        "revenue": null,
-        "last_updated": "2025-05-16 14:01:34"
+        "revenue": null
     },
     "OASPQ": {
         "market_cap": null,
-        "revenue": null,
-        "last_updated": "2025-05-16 14:01:46"
+        "revenue": null
     },
     "JSEOAS": {
         "market_cap": null,
-        "revenue": null,
-        "last_updated": "2025-05-16 14:01:58"
+        "revenue": null
     }
 }

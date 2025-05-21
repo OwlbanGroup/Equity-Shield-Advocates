@@ -1,5 +1,6 @@
-from waitress import serve
-from api_server import app
+from src.api_server import create_app
+
+app = create_app()
 
 if __name__ == "__main__":
-    serve(app, host="0.0.0.0", port=8000, threads=8)
+    app.run()
