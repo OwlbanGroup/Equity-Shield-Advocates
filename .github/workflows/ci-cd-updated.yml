@@ -35,6 +35,8 @@ jobs:
   build-and-push:
     needs: test
     runs-on: ubuntu-latest
+    outputs:
+      image: ${{ steps.build.outputs.image }}
     steps:
       - uses: actions/checkout@v2
       
@@ -50,6 +52,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
         
       - name: Build and push Docker image
+        id: build
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ github.sha }}
@@ -74,13 +77,13 @@ jobs:
           aws ecs describe-task-definition --task-definition equity-shield-task \
           --query taskDefinition > task-definition.json
           
-      - name: Fill in the new image ID in the Amazon ECS task definition
+      - name: Update ECS task definition
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
           task-definition: task-definition.json
           container-name: ${{ env.CONTAINER_NAME }}
-          image: ${{ steps.build-and-push.outputs.image }}
+          image: ${{ needs.build-and-push.outputs.image }}
           
       - name: Deploy to Amazon ECS
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
