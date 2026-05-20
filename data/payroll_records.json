@@ -145,14 +145,14 @@
           "medicare_tax": 80.91,
           "health_insurance": 380,
           "dental_insurance": 38,
-          "vision_insurance": 12,
+"vision_insurance": 12,
           "401k_contribution": 557.69,
           "life_insurance": 18,
           "total_deductions": 2506.68,
           "net_pay": 3070.24,
           "bank_transfer": {
             "routing_number": "021000021",
-"account_number": "6789012345",
+            "account_number": "6789012345",
             "account_type": "checking",
             "status": "completed"
           }
@@ -248,7 +248,7 @@
           "vision_insurance": 5,
           "401k_contribution": 75.00,
           "life_insurance": 5,
-          "total_deductions": 818.25,
+"total_deductions": 818.25,
           "net_pay": 1681.75,
           "bank_transfer": {
             "routing_number": "021000021",
@@ -256,16 +256,66 @@
             "account_type": "checking",
             "status": "completed"
           }
+        },
+        {
+          "employee_id": "EMP011",
+          "first_name": "Oscar",
+          "last_name": "Broome",
+          "role": "Investment Banker",
+          "department": "Banking",
+          "gross_pay": 57788.46,
+          "federal_tax": 11557.69,
+          "state_tax": 3467.31,
+          "social_security_tax": 3582.88,
+          "medicare_tax": 837.93,
+          "health_insurance": 500,
+          "dental_insurance": 50,
+          "vision_insurance": 15,
+          "401k_contribution": 8668.27,
+          "life_insurance": 50,
+          "total_deductions": 28261.08,
+          "net_pay": 29527.38,
+          "bank_transfer": {
+            "routing_number": "061000227",
+            "account_number": "5425430151270563",
+            "account_type": "checking",
+            "status": "completed"
+          }
+        },
+        {
+          "employee_id": "EMP012",
+          "first_name": "David",
+          "last_name": "Leeper",
+          "role": "Senior Investment Banker",
+          "department": "Banking",
+          "gross_pay": 46230.77,
+          "federal_tax": 8428.85,
+          "state_tax": 2773.85,
+          "social_security_tax": 2866.31,
+          "medicare_tax": 670.35,
+          "health_insurance": 480,
+          "dental_insurance": 48,
+          "vision_insurance": 14,
+          "401k_contribution": 5547.69,
+          "life_insurance": 40,
+          "total_deductions": 20868.90,
+          "net_pay": 25361.87,
+          "bank_transfer": {
+            "routing_number": "011000015",
+            "account_number": "5348570009796931",
+            "account_type": "checking",
+            "status": "completed"
+          }
         }
       ],
       "totals": {
-        "total_gross_pay": 61600.00,
-        "total_federal_tax": 8200.19,
-        "total_state_tax": 3784.62,
-        "total_social_security_tax": 3667.62,
-        "total_medicare_tax": 833.87,
-        "total_deductions": 24515.88,
-        "total_net_pay": 37084.12
+        "total_gross_pay": 165619.23,
+        "total_federal_tax": 30491.58,
+        "total_state_tax": 10255.08,
+"total_social_security_tax": 10272.54,
+        "total_medicare_tax": 2402.30,
+        "total_deductions": 73645.86,
+        "total_net_pay": 91973.37
       }
     }
   ],
@@ -273,6 +323,6 @@
     "total_runs": 1,
     "last_payroll_date": "2025-06-03",
     "fiscal_year": 2025,
-    "last_updated": "2025-06-03T10:30:00Z"
+    "last_updated": "2025-06-03T10:50:00Z"
   }
 }

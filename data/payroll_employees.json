@@ -266,9 +266,9 @@
         "dental_insurance": 18,
         "vision_insurance": 5,
         "401k_contribution_percent": 3,
-        "life_insurance": 5
+"life_insurance": 5
       },
-"status": "active"
+      "status": "active"
     },
     {
       "id": "EMP011",
