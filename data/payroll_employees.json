@@ -1,0 +1,280 @@
+{
+  "employees": [
+    {
+      "id": "EMP001",
+      "first_name": "John",
+      "last_name": "Anderson",
+      "email": "janderson@equityshieldadvocates.com",
+      "role": "Chief Executive Officer",
+      "department": "Executive",
+      "hire_date": "2020-01-15",
+      "salary": 250000,
+      "payment_frequency": "biweekly",
+      "tax_filing_status": "married",
+      "federal_exemptions": 3,
+      "state": "NY",
+      "bank_account": {
+        "routing_number": "021000021",
+        "account_number": "1234567890",
+        "account_type": "checking"
+      },
+      "deductions": {
+        "health_insurance": 450,
+        "dental_insurance": 45,
+        "vision_insurance": 15,
+        "401k_contribution_percent": 10,
+        "life_insurance": 25
+      },
+      "status": "active"
+    },
+    {
+      "id": "EMP002",
+      "first_name": "Sarah",
+      "last_name": "Mitchell",
+      "email": "smitchell@equityshieldadvocates.com",
+      "role": "Chief Financial Officer",
+      "department": "Finance",
+      "hire_date": "2020-02-01",
+      "salary": 200000,
+      "payment_frequency": "biweekly",
+      "tax_filing_status": "single",
+      "federal_exemptions": 2,
+      "state": "NY",
+      "bank_account": {
+        "routing_number": "021000021",
+        "account_number": "2345678901",
+        "account_type": "checking"
+      },
+      "deductions": {
+        "health_insurance": 350,
+        "dental_insurance": 35,
+        "vision_insurance": 10,
+        "401k_contribution_percent": 12,
+        "life_insurance": 20
+      },
+      "status": "active"
+    },
+    {
+      "id": "EMP003",
+      "first_name": "Michael",
+      "last_name": "Chen",
+      "email": "mchen@equityshieldadvocates.com",
+      "role": "Chief Technology Officer",
+      "department": "Technology",
+      "hire_date": "2021-03-15",
+      "salary": 180000,
+      "payment_frequency": "biweekly",
+      "tax_filing_status": "single",
+      "federal_exemptions": 1,
+      "state": "CA",
+      "bank_account": {
+        "routing_number": "021000021",
+        "account_number": "3456789012",
+        "account_type": "checking"
+      },
+      "deductions": {
+        "health_insurance": 300,
+        "dental_insurance": 30,
+        "vision_insurance": 10,
+        "401k_contribution_percent": 15,
+        "life_insurance": 15
+      },
+      "status": "active"
+    },
+    {
+      "id": "EMP004",
+      "first_name": "Emily",
+      "last_name": "Rodriguez",
+      "email": "erodriguez@equityshieldadvocates.com",
+      "role": "Investment Director",
+      "department": "Investment",
+      "hire_date": "2021-06-01",
+      "salary": 175000,
+      "payment_frequency": "biweekly",
+      "tax_filing_status": "married",
+      "federal_exemptions": 2,
+      "state": "NY",
+      "bank_account": {
+        "routing_number": "021000021",
+        "account_number": "4567890123",
+        "account_type": "checking"
+      },
+      "deductions": {
+        "health_insurance": 400,
+        "dental_insurance": 40,
+        "vision_insurance": 12,
+        "401k_contribution_percent": 10,
+        "life_insurance": 20
+      },
+      "status": "active"
+    },
+    {
+      "id": "EMP005",
+      "first_name": "David",
+      "last_name": "Williams",
+      "email": "dwilliams@equityshieldadvocates.com",
+      "role": "Senior Analyst",
+      "department": "Investment",
+      "hire_date": "2022-01-10",
+      "salary": 125000,
+      "payment_frequency": "biweekly",
+      "tax_filing_status": "single",
+      "federal_exemptions": 1,
+      "state": "NY",
+      "bank_account": {
+        "routing_number": "021000021",
+        "account_number": "5678901234",
+        "account_type": "checking"
+      },
+      "deductions": {
+        "health_insurance": 280,
+        "dental_insurance": 28,
+        "vision_insurance": 8,
+        "401k_contribution_percent": 8,
+        "life_insurance": 10
+      },
+      "status": "active"
+    },
+    {
+      "id": "EMP006",
+      "first_name": "Jennifer",
+      "last_name": "Lee",
+      "email": "jlee@equityshieldadvocates.com",
+      "role": "Portfolio Manager",
+      "department": "Investment",
+      "hire_date": "2022-04-15",
+      "salary": 145000,
+      "payment_frequency": "biweekly",
+      "tax_filing_status": "married",
+      "federal_exemptions": 3,
+      "state": "NJ",
+      "bank_account": {
+        "routing_number": "021000021",
+        "account_number": "6789012345",
+        "account_type": "checking"
+      },
+      "deductions": {
+        "health_insurance": 380,
+        "dental_insurance": 38,
+        "vision_insurance": 12,
+        "401k_contribution_percent": 10,
+        "life_insurance": 18
+      },
+      "status": "active"
+    },
+    {
+      "id": "EMP007",
+      "first_name": "Robert",
+      "last_name": "Taylor",
+      "email": "rtaylor@equityshieldadvocates.com",
+      "role": "Compliance Officer",
+      "department": "Legal",
+      "hire_date": "2021-09-01",
+      "salary": 130000,
+      "payment_frequency": "biweekly",
+      "tax_filing_status": "single",
+      "federal_exemptions": 0,
+      "state": "NY",
+      "bank_account": {
+        "routing_number": "021000021",
+        "account_number": "7890123456",
+        "account_type": "checking"
+      },
+      "deductions": {
+        "health_insurance": 250,
+        "dental_insurance": 25,
+        "vision_insurance": 8,
+        "401k_contribution_percent": 6,
+        "life_insurance": 12
+      },
+      "status": "active"
+    },
+    {
+      "id": "EMP008",
+      "first_name": "Amanda",
+      "last_name": "Garcia",
+      "email": "agarcia@equityshieldadvocates.com",
+      "role": "Marketing Director",
+      "department": "Marketing",
+      "hire_date": "2022-07-01",
+      "salary": 115000,
+      "payment_frequency": "biweekly",
+      "tax_filing_status": "single",
+      "federal_exemptions": 1,
+      "state": "NY",
+      "bank_account": {
+        "routing_number": "021000021",
+        "account_number": "8901234567",
+        "account_type": "checking"
+      },
+      "deductions": {
+        "health_insurance": 220,
+        "dental_insurance": 22,
+        "vision_insurance": 6,
+        "401k_contribution_percent": 5,
+        "life_insurance": 8
+      },
+      "status": "active"
+    },
+    {
+      "id": "EMP009",
+      "first_name": "Christopher",
+      "last_name": "Brown",
+      "email": "cbrown@equityshieldadvocates.com",
+      "role": "Software Engineer",
+      "department": "Technology",
+      "hire_date": "2023-01-15",
+      "salary": 110000,
+      "payment_frequency": "biweekly",
+      "tax_filing_status": "single",
+      "federal_exemptions": 1,
+      "state": "CA",
+      "bank_account": {
+        "routing_number": "021000021",
+        "account_number": "9012345678",
+        "account_type": "checking"
+      },
+      "deductions": {
+        "health_insurance": 200,
+        "dental_insurance": 20,
+        "vision_insurance": 5,
+        "401k_contribution_percent": 5,
+        "life_insurance": 8
+      },
+      "status": "active"
+    },
+    {
+      "id": "EMP010",
+      "first_name": "Jessica",
+      "last_name": "Davis",
+      "email": "jdavis@equityshieldadvocates.com",
+      "role": "Administrative Assistant",
+      "department": "Administration",
+      "hire_date": "2023-06-01",
+      "salary": 65000,
+      "payment_frequency": "biweekly",
+      "tax_filing_status": "single",
+      "federal_exemptions": 1,
+      "state": "NY",
+      "bank_account": {
+        "routing_number": "021000021",
+        "account_number": "0123456789",
+        "account_type": "checking"
+      },
+      "deductions": {
+        "health_insurance": 180,
+        "dental_insurance": 18,
+        "vision_insurance": 5,
+        "401k_contribution_percent": 3,
+        "life_insurance": 5
+      },
+      "status": "active"
+    }
+  ],
+  "metadata": {
+    "total_employees": 10,
+    "total_annual_salary": 1605000,
+    "last_updated": "2025-05-20T22:00:00Z",
+    "generated_date": "2025-05-20"
+  }
+}
