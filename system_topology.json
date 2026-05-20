@@ -1,0 +1,203 @@
+{
+  "topology_type": "End-to-End System Topology",
+  "description": "Complete system architecture showing all components, data flows, and integrations",
+  "generated_date": "2025-05-20",
+  "system_overview": {
+    "name": "Equity Shield Advocates Platform",
+    "version": "1.0.0",
+    "architecture_type": "REST API + Web Dashboard"
+  },
+  "components": {
+    "api_server": {
+      "name": "Flask API Server",
+      "file": "api_server.py",
+      "port": 5001,
+      "framework": "Flask",
+      "endpoints": [
+        {
+          "path": "/api/corporate-structure",
+          "method": "GET",
+          "description": "Get corporate structure data"
+        },
+        {
+          "path": "/api/companies/<sector>",
+          "method": "GET",
+          "description": "Get companies by sector"
+        },
+        {
+          "path": "/api/company/<ticker>",
+          "method": "GET",
+          "description": "Get company by ticker"
+        },
+        {
+          "path": "/api/real-assets",
+          "method": "GET",
+          "description": "Get real assets under management"
+        }
+      ],
+      "status": "active"
+    },
+    "dashboard": {
+      "name": "Web Dashboard",
+      "files": [
+        "dashboard/index.html",
+        "dashboard/app.js",
+        "dashboard/styles.css"
+      ],
+      "framework": "Bootstrap 5.1",
+      "features": [
+        "Corporate Data Display",
+        "Corporate Structure Tree",
+        "Real Assets List",
+        "API Health Status",
+        "Auto-refresh (30 second interval)"
+      ],
+      "api_integration": "fetchWithRetry utility",
+      "status": "active"
+    },
+    "data_layer": {
+      "name": "JSON Data Files",
+      "files": [
+        {
+          "path": "corporate_structure.json",
+          "purpose": "API data source"
+        },
+        {
+          "path": "comprehensive_corporate_structure.json",
+          "purpose": "Extended corporate data"
+        },
+        {
+          "path": "real_assets_under_management.json",
+          "purpose": "Asset portfolio data"
+        },
+        {
+          "path": "data/corporate_data.json",
+          "purpose": "Fund overview data"
+        }
+      ],
+      "status": "active"
+    }
+  },
+  "data_flows": {
+    "primary_flow": {
+      "source": "Data Layer (JSON files)",
+      "destination": "Flask API Server",
+      "protocol": "File I/O",
+      "description": "API reads from JSON files on request"
+    },
+    "secondary_flow": {
+      "source": "Flask API Server",
+      "destination": "Web Dashboard",
+      "protocol": "HTTP/REST",
+      "description": "Dashboard fetches data via REST API calls"
+    },
+    "display_flow": {
+      "source": "API Response",
+      "destination": "Dashboard UI",
+      "protocol": "JavaScript DOM",
+      "description": "JavaScript updates HTML elements with data"
+    }
+  },
+  "infrastructure": {
+    "deployment": {
+      "platform": "Windows/Linux compatible",
+      "container": "Docker optional",
+      "process_manager": " waitress server"
+    },
+    "dependencies": [
+      "Flask",
+      "Python 3.x",
+      "Bootstrap 5.1",
+      "JavaScript ES6+"
+    ],
+    "configuration": {
+      "api_port": "5001 (default)",
+      "api_base_url": "http://localhost:5001",
+      "dashboard_port": "N/A (served via Flask or standalone)",
+      "retry_delay": "5000ms",
+      "max_retries": 3
+    }
+  },
+  "system_topology_hierarchy": {
+    "layer_1_presentation": {
+      "components": ["Web Dashboard (HTML/CSS/JS)"],
+      "description": "User interface layer"
+    },
+    "layer_2_application": {
+      "components": ["Flask API Server", "Dashboard Server"],
+      "description": "Application logic and API endpoints"
+    },
+    "layer_3_data": {
+      "components": [
+        "corporate_structure.json",
+        "comprehensive_corporate_structure.json",
+        "real_assets_under_management.json",
+        "data/corporate_data.json"
+      ],
+      "description": "Data persistence layer"
+    }
+  },
+  "integration_points": {
+    "internal": [
+      {
+        "from": "Dashboard",
+        "to": "API Server",
+        "type": "HTTP REST"
+      }
+    ],
+    "external": [
+      {
+        "service": "Alpha Vantage (Financial Data)",
+        "status": "configured",
+        "file": "scripts/fetch_financial_data_alpha_vantage.py"
+      }
+    ]
+  },
+  "topology_diagram": {
+    "nodes": [
+      {
+        "id": "dashboard",
+        "label": "Web Dashboard",
+        "type": "presentation"
+      },
+      {
+        "id": "api_server",
+        "label": "Flask API Server",
+        "type": "application"
+      },
+      {
+        "id": "data_files",
+        "label": "JSON Data Files",
+        "type": "data"
+      },
+      {
+        "id": "external_api",
+        "label": "External APIs",
+        "type": "external"
+      }
+    ],
+    "edges": [
+      {
+        "from": "dashboard",
+        "to": "api_server",
+        "label": "HTTP GET Requests"
+      },
+      {
+        "from": "api_server",
+        "to": "data_files",
+        "label": "File I/O"
+      },
+      {
+        "from": "api_server",
+        "to": "external_api",
+        "label": "Optional: Financial Data"
+      }
+    ]
+  },
+  "system_metrics": {
+    "api_health_check_endpoint": "/health",
+    "data_refresh_interval": "30 seconds (dashboard)",
+    "max_concurrent_connections": "Not limited (Flask default)",
+    "supported_formats": ["JSON"]
+  }
+}

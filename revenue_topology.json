@@ -1,0 +1,154 @@
+{
+  "topology_type": "Revenue Topology",
+  "description": "Hierarchical organization of revenue streams by sector and company",
+  "generated_date": "2025-05-20",
+  "total_revenue": {
+    "amount": 936561387520,
+    "amount_formatted": "$936.56 Billion"
+  },
+  "sectors": {
+    "Technology": {
+      "sector_revenue": 400507011072,
+      "companies": [
+        {
+          "ticker": "MSFT",
+          "company": "Microsoft Corporation",
+          "revenue": 270010007552,
+          "revenue_formatted": "$270.01 Billion",
+          "percentage_of_total_revenue": 28.83
+        },
+        {
+          "ticker": "NVDA",
+          "company": "NVIDIA Corporation",
+          "revenue": 130497003520,
+          "revenue_formatted": "$130.50 Billion",
+          "percentage_of_total_revenue": 13.93
+        }
+      ],
+      "company_count": 2
+    },
+    "Communication Services": {
+      "sector_revenue": 359713013760,
+      "companies": [
+        {
+          "ticker": "GOOG",
+          "company": "Alphabet Inc.",
+          "revenue": 359713013760,
+          "revenue_formatted": "$359.71 Billion",
+          "percentage_of_total_revenue": 38.41
+        }
+      ],
+      "company_count": 1
+    },
+    "Financial Services": {
+      "sector_revenue": 337975390720,
+      "companies": [
+        {
+          "ticker": "JPM",
+          "company": "JP Morgan Chase & Co.",
+          "revenue": 168713994240,
+          "revenue_formatted": "$168.71 Billion",
+          "percentage_of_total_revenue": 18.01
+        },
+        {
+          "ticker": "BAC",
+          "company": "Bank of America Corporation",
+          "revenue": 97452998656,
+          "revenue_formatted": "$97.45 Billion",
+          "percentage_of_total_revenue": 10.40
+        },
+        {
+          "ticker": "C",
+          "company": "Citigroup, Inc.",
+          "revenue": 71819001856,
+          "revenue_formatted": "$71.82 Billion",
+          "percentage_of_total_revenue": 7.67
+        }
+      ],
+      "company_count": 3
+    },
+    "Real Estate": {
+      "sector_revenue": 26906637056,
+      "companies": [
+        {
+          "ticker": "PLD",
+          "company": "Prologis, Inc.",
+          "revenue": 8733704192,
+          "revenue_formatted": "$8.73 Billion",
+          "percentage_of_total_revenue": 0.93
+        },
+        {
+          "ticker": "AMT",
+          "company": "American Tower Corporation (REIT)",
+          "revenue": 10177399808,
+          "revenue_formatted": "$10.18 Billion",
+          "percentage_of_total_revenue": 1.09
+        },
+        {
+          "ticker": "SPG",
+          "company": "Simon Property Group, Inc.",
+          "revenue": 5994220032,
+          "revenue_formatted": "$5.99 Billion",
+          "percentage_of_total_revenue": 0.64
+        }
+      ],
+      "company_count": 3
+    }
+  },
+  "revenue_allocation": {
+    "Technology": 42.76,
+    "Communication Services": 38.41,
+    "Financial Services": 36.08,
+    "Real Estate": 2.87
+  },
+  "top_revenue_generators": [
+    {
+      "rank": 1,
+      "ticker": "GOOG",
+      "company": "Alphabet Inc.",
+      "revenue": 359713013760
+    },
+    {
+      "rank": 2,
+      "ticker": "MSFT",
+      "company": "Microsoft Corporation",
+      "revenue": 270010007552
+    },
+    {
+      "rank": 3,
+      "ticker": "JPM",
+      "company": "JP Morgan Chase & Co.",
+      "revenue": 168713994240
+    },
+    {
+      "rank": 4,
+      "ticker": "NVDA",
+      "company": "NVIDIA Corporation",
+      "revenue": 130497003520
+    },
+    {
+      "rank": 5,
+      "ticker": "BAC",
+      "company": "Bank of America Corporation",
+      "revenue": 97452998656
+    }
+  ],
+  "revenue_growth_matrix": {
+    " Technology": {
+      "combined_revenue": 400507011072,
+      "average_revenue_per_company": 200253505536
+    },
+    "Communication Services": {
+      "combined_revenue": 359713013760,
+      "average_revenue_per_company": 359713013760
+    },
+    "Financial Services": {
+      "combined_revenue": 337975390720,
+      "average_revenue_per_company": 112658463573
+    },
+    "Real Estate": {
+      "combined_revenue": 26906637056,
+      "average_revenue_per_company": 8968879019
+    }
+  }
+}

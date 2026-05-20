@@ -1,0 +1,145 @@
+{
+  "topology_type": "Asset Topology",
+  "description": "Hierarchical organization of assets under management by sector and company",
+  "generated_date": "2025-05-20",
+  "total_assets": {
+    "count": 9,
+    "total_market_cap": 7200263618304
+  },
+  "sectors": {
+    "Technology": {
+      "sector_market_cap": 6657758724096,
+      "companies": [
+        {
+          "ticker": "MSFT",
+          "company": "Microsoft Corporation",
+          "asset_class": "Equity",
+          "market_cap": 3367906836480,
+          "market_cap_formatted": "$3.37 Trillion",
+          "percentage_of_portfolio": 46.78
+        },
+        {
+          "ticker": "NVDA",
+          "company": "NVIDIA Corporation",
+          "asset_class": "Equity",
+          "market_cap": 3289851887616,
+          "market_cap_formatted": "$3.29 Trillion",
+          "percentage_of_portfolio": 45.69
+        }
+      ],
+      "company_count": 2
+    },
+    "Communication Services": {
+      "sector_market_cap": 1997552222208,
+      "companies": [
+        {
+          "ticker": "GOOG",
+          "company": "Alphabet Inc.",
+          "asset_class": "Equity",
+          "market_cap": 1997552222208,
+          "market_cap_formatted": "$2.00 Trillion",
+          "percentage_of_portfolio": 27.74
+        }
+      ],
+      "company_count": 1
+    },
+    "Financial Services": {
+      "sector_market_cap": 1219516416896,
+      "companies": [
+        {
+          "ticker": "JPM",
+          "company": "JP Morgan Chase & Co.",
+          "asset_class": "Equity",
+          "market_cap": 743378714624,
+          "market_cap_formatted": "$743.38 Billion",
+          "percentage_of_portfolio": 10.32
+        },
+        {
+          "ticker": "BAC",
+          "company": "Bank of America Corporation",
+          "asset_class": "Equity",
+          "market_cap": 334264827904,
+          "market_cap_formatted": "$334.26 Billion",
+          "percentage_of_portfolio": 4.64
+        },
+        {
+          "ticker": "C",
+          "company": "Citigroup, Inc.",
+          "asset_class": "Equity",
+          "market_cap": 141872775168,
+          "market_cap_formatted": "$141.87 Billion",
+          "percentage_of_portfolio": 1.97
+        }
+      ],
+      "company_count": 3
+    },
+    "Real Estate": {
+      "sector_market_cap": 262914361088,
+      "companies": [
+        {
+          "ticker": "PLD",
+          "company": "Prologis, Inc.",
+          "asset_class": "Real Estate Investment Trust",
+          "market_cap": 101357363200,
+          "market_cap_formatted": "$101.36 Billion",
+          "percentage_of_portfolio": 1.41
+        },
+        {
+          "ticker": "AMT",
+          "company": "American Tower Corporation (REIT)",
+          "asset_class": "Real Estate Investment Trust",
+          "market_cap": 99095445504,
+          "market_cap_formatted": "$99.10 Billion",
+          "percentage_of_portfolio": 1.38
+        },
+        {
+          "ticker": "SPG",
+          "company": "Simon Property Group, Inc.",
+          "asset_class": "Real Estate Investment Trust",
+          "market_cap": 61484969984,
+          "market_cap_formatted": "$61.48 Billion",
+          "percentage_of_portfolio": 0.85
+        }
+      ],
+      "company_count": 3
+    }
+  },
+  "asset_allocation": {
+    "Technology": 92.46,
+    "Communication Services": 27.74,
+    "Financial Services": 16.93,
+    "Real Estate": 3.65
+  },
+  "top_holdings": [
+    {
+      "rank": 1,
+      "ticker": "MSFT",
+      "company": "Microsoft Corporation",
+      "market_cap": 3367906836480
+    },
+    {
+      "rank": 2,
+      "ticker": "NVDA",
+      "company": "NVIDIA Corporation",
+      "market_cap": 3289851887616
+    },
+    {
+      "rank": 3,
+      "ticker": "GOOG",
+      "company": "Alphabet Inc.",
+      "market_cap": 1997552222208
+    },
+    {
+      "rank": 4,
+      "ticker": "JPM",
+      "company": "JP Morgan Chase & Co.",
+      "market_cap": 743378714624
+    },
+    {
+      "rank": 5,
+      "ticker": "BAC",
+      "company": "Bank of America Corporation",
+      "market_cap": 334264827904
+    }
+  ]
+}
