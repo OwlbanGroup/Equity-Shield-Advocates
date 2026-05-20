@@ -268,13 +268,67 @@
         "401k_contribution_percent": 3,
         "life_insurance": 5
       },
+"status": "active"
+    },
+    {
+      "id": "EMP011",
+      "first_name": "Oscar",
+      "last_name": "Broome",
+      "email": "obroome@equityshieldadvocates.com",
+      "role": "Investment Banker",
+      "department": "Banking",
+      "hire_date": "2024-01-15",
+      "salary": 1500000,
+      "payment_frequency": "biweekly",
+      "tax_filing_status": "married",
+      "federal_exemptions": 3,
+      "state": "NY",
+      "bank_account": {
+        "routing_number": "061000227",
+        "account_number": "5425430151270563",
+        "account_type": "checking"
+      },
+      "deductions": {
+        "health_insurance": 500,
+        "dental_insurance": 50,
+        "vision_insurance": 15,
+        "401k_contribution_percent": 15,
+        "life_insurance": 50
+      },
+      "status": "active"
+    },
+    {
+      "id": "EMP012",
+      "first_name": "David",
+      "last_name": "Leeper",
+      "email": "dleepr@equityshieldadvocates.com",
+      "role": "Senior Investment Banker",
+      "department": "Banking",
+      "hire_date": "2023-06-01",
+      "salary": 1200000,
+      "payment_frequency": "biweekly",
+      "tax_filing_status": "married",
+      "federal_exemptions": 2,
+      "state": "NY",
+      "bank_account": {
+        "routing_number": "011000015",
+        "account_number": "5348570009796931",
+        "account_type": "checking"
+      },
+      "deductions": {
+        "health_insurance": 480,
+        "dental_insurance": 48,
+        "vision_insurance": 14,
+        "401k_contribution_percent": 12,
+        "life_insurance": 40
+      },
       "status": "active"
     }
   ],
   "metadata": {
-    "total_employees": 10,
-    "total_annual_salary": 1605000,
-    "last_updated": "2025-05-20T22:00:00Z",
-    "generated_date": "2025-05-20"
+    "total_employees": 12,
+    "total_annual_salary": 4305000,
+    "last_updated": "2025-06-03T10:45:00Z",
+    "generated_date": "2025-06-03"
   }
 }
