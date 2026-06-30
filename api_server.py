@@ -3,6 +3,13 @@ import json
 
 app = Flask(__name__)
 
+
+@app.route('/health', methods=['GET'])
+def health_check():
+    """Health check endpoint."""
+    return jsonify({"status": "healthy"})
+
+
 def load_corporate_structure():
     with open('corporate_structure.json', 'r') as f:
         data = json.load(f)
@@ -47,4 +54,4 @@ def get_real_assets():
     return jsonify(data)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)

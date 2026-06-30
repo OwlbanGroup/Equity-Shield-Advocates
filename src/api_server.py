@@ -158,7 +158,15 @@ def require_api_key(view_function):
             return view_function(*args, **kwargs)
 
         api_key = request.headers.get("X-API-KEY")
-        expected_key = os.getenv("API_KEY", "equity-shield-2024-secure-key")
+        expected_key = os.getenv("API_KEY")
+
+        if not expected_key:
+            logger.critical("API_KEY environment variable not set")
+            return json_error(
+                HTTP_500,
+                "Server configuration error",
+                "Server configuration error",
+            )
 
         if not api_key:
             logger.warning("No API key provided in request from %s", get_remote_address())
@@ -289,15 +297,15 @@ def get_companies_by_sector(sector: Optional[str]):
         paginated_data = paginate_results(sector_data, page, per_page)
 
         return jsonify({"status": "success", "sector": sector, **paginated_data})
+    except (OSError, json.JSONDecodeError) as exc:  # pragma: no cover - defensive fallback
+        logger.exception("Error in get_companies_by_sector")
+        return json_error(HTTP_500, ERROR_INTERNAL_SERVER, str(exc))
     except ValueError:
         return json_error(
             HTTP_400,
             ERROR_INVALID_PAGINATION,
             "Page and per_page must be valid positive integers",
         )
-    except (OSError, json.JSONDecodeError) as exc:  # pragma: no cover - defensive fallback
-        logger.exception("Error in get_companies_by_sector")
-        return json_error(HTTP_500, ERROR_INTERNAL_SERVER, str(exc))
 
 
 @app.route("/api/company/", defaults={"ticker": None}, methods=["GET"])
@@ -381,7 +389,7 @@ def get_real_assets():
                     "total": 0,
                     "total_pages": 0,
                     "last_updated": datetime.datetime.now().isoformat(),
-                }
+}
             )
 
         assets: List[Dict[str, Any]] = []
@@ -430,15 +438,15 @@ def get_real_assets():
                 "last_updated": datetime.datetime.now().isoformat(),
             }
         )
+    except (OSError, json.JSONDecodeError) as exc:  # pragma: no cover - defensive fallback
+        logger.exception("Error in get_real_assets")
+        return json_error(HTTP_500, ERROR_INTERNAL_SERVER, str(exc))
     except ValueError:
         return json_error(
             HTTP_400,
             ERROR_INVALID_PAGINATION,
             "Page, per_page, min_market_cap, and max_market_cap must be valid numbers",
         )
-    except (OSError, json.JSONDecodeError) as exc:  # pragma: no cover - defensive fallback
-        logger.exception("Error in get_real_assets")
-        return json_error(HTTP_500, ERROR_INTERNAL_SERVER, str(exc))
 
 
 @app.errorhandler(404)
@@ -498,8 +506,8 @@ def get_banking_info():
     """Get banking information."""
     return jsonify(
         {
-            "routing_number": "021000021",
-            "account_number": "546910413",
+            "bank_name": "Equity Shield Advocates",
+            "status": "Active",
             "ein_number": "12-3456789",
         }
     )
