@@ -191,7 +191,7 @@ def health_check():
                 "version": "1.0.0",
             }
         )
-    except Exception as exc:  # pragma: no cover - defensive fallback
+    except (ValueError, TypeError) as exc:  # pragma: no cover - defensive fallback
         logger.exception("Health check failed")
         return json_error(HTTP_500, ERROR_INTERNAL_SERVER, str(exc))
 
@@ -223,7 +223,7 @@ def get_corporate_data():
             "aum": live_data.get("AUM", ""),
         }
         return jsonify({"status": "success", "data": corporate_summary})
-    except Exception as exc:  # pragma: no cover - defensive fallback
+    except (OSError, json.JSONDecodeError) as exc:  # pragma: no cover - defensive fallback
         logger.exception("Error in get_corporate_data")
         return json_error(HTTP_500, ERROR_INTERNAL_SERVER, str(exc))
 
@@ -248,7 +248,7 @@ def get_corporate_structure():
             return jsonify({"status": "success", "data": {}})
 
         return jsonify({"status": "success", "data": structure_data})
-    except Exception as exc:  # pragma: no cover - defensive fallback
+    except (OSError, json.JSONDecodeError) as exc:  # pragma: no cover - defensive fallback
         logger.exception("Error in get_corporate_structure")
         return json_error(HTTP_500, ERROR_INTERNAL_SERVER, str(exc))
 
@@ -295,7 +295,7 @@ def get_companies_by_sector(sector: Optional[str]):
             ERROR_INVALID_PAGINATION,
             "Page and per_page must be valid positive integers",
         )
-    except Exception as exc:  # pragma: no cover - defensive fallback
+    except (OSError, json.JSONDecodeError) as exc:  # pragma: no cover - defensive fallback
         logger.exception("Error in get_companies_by_sector")
         return json_error(HTTP_500, ERROR_INTERNAL_SERVER, str(exc))
 
@@ -339,7 +339,7 @@ def get_company_by_ticker(ticker: Optional[str]):
             f"Company with ticker '{ticker}' not found",
             f"Company with ticker '{ticker}' not found",
         )
-    except Exception as exc:  # pragma: no cover - defensive fallback
+    except (OSError, json.JSONDecodeError) as exc:  # pragma: no cover - defensive fallback
         logger.exception("Error in get_company_by_ticker")
         return json_error(HTTP_500, ERROR_INTERNAL_SERVER, str(exc))
 
@@ -436,7 +436,7 @@ def get_real_assets():
             ERROR_INVALID_PAGINATION,
             "Page, per_page, min_market_cap, and max_market_cap must be valid numbers",
         )
-    except Exception as exc:  # pragma: no cover - defensive fallback
+    except (OSError, json.JSONDecodeError) as exc:  # pragma: no cover - defensive fallback
         logger.exception("Error in get_real_assets")
         return json_error(HTTP_500, ERROR_INTERNAL_SERVER, str(exc))
 

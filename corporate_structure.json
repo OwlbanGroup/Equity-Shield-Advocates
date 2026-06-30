@@ -3,62 +3,62 @@
         {
             "company": "Alphabet Inc.",
             "ticker": "GOOG",
-            "market_cap": 1997552222208,
-            "revenue": 359713013760
+            "market_cap": 2100000000000,
+            "revenue": 365000000000
         }
     ],
     "Technology": [
         {
             "company": "Microsoft Corporation",
             "ticker": "MSFT",
-            "market_cap": 3367906836480,
-            "revenue": 270010007552
+            "market_cap": 3400000000000,
+            "revenue": 275000000000
         },
         {
             "company": "NVIDIA Corporation",
             "ticker": "NVDA",
-            "market_cap": 3289851887616,
-            "revenue": 130497003520
+            "market_cap": 3500000000000,
+            "revenue": 135000000000
         }
     ],
     "Financial Services": [
         {
             "company": "JP Morgan Chase & Co.",
             "ticker": "JPM",
-            "market_cap": 743378714624,
-            "revenue": 168713994240
+            "market_cap": 750000000000,
+            "revenue": 170000000000
         },
         {
             "company": "Bank of America Corporation",
             "ticker": "BAC",
-            "market_cap": 334264827904,
-            "revenue": 97452998656
+            "market_cap": 335000000000,
+            "revenue": 98000000000
         },
         {
             "company": "Citigroup, Inc.",
             "ticker": "C",
-            "market_cap": 141872775168,
-            "revenue": 71819001856
+            "market_cap": 140000000000,
+            "revenue": 72000000000
         }
     ],
     "Real Estate": [
         {
             "company": "Prologis, Inc.",
             "ticker": "PLD",
-            "market_cap": 101357363200,
-            "revenue": 8733704192
+            "market_cap": 105000000000,
+            "revenue": 8900000000
         },
         {
-            "company": "American Tower Corporation (REI",
+            "company": "American Tower Corporation (REIT)",
             "ticker": "AMT",
-            "market_cap": 99095445504,
-            "revenue": 10177399808
+            "market_cap": 100000000000,
+            "revenue": 10500000000
         },
         {
             "company": "Simon Property Group, Inc.",
             "ticker": "SPG",
-            "market_cap": 61484969984,
-            "revenue": 5994220032
+            "market_cap": 62000000000,
+            "revenue": 6100000000
         }
     ]
 }

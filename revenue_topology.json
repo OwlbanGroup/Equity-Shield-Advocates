@@ -3,92 +3,92 @@
   "description": "Hierarchical organization of revenue streams by sector and company",
   "generated_date": "2025-05-20",
   "total_revenue": {
-    "amount": 936561387520,
-    "amount_formatted": "$936.56 Billion"
+    "amount": 953900000000,
+    "amount_formatted": "$953.90 Billion"
   },
   "sectors": {
     "Technology": {
-      "sector_revenue": 400507011072,
+      "sector_revenue": 410000000000,
       "companies": [
         {
           "ticker": "MSFT",
           "company": "Microsoft Corporation",
-          "revenue": 270010007552,
-          "revenue_formatted": "$270.01 Billion",
+          "revenue": 275000000000,
+          "revenue_formatted": "$275.00 Billion",
           "percentage_of_total_revenue": 28.83
         },
         {
           "ticker": "NVDA",
           "company": "NVIDIA Corporation",
-          "revenue": 130497003520,
-          "revenue_formatted": "$130.50 Billion",
-          "percentage_of_total_revenue": 13.93
+          "revenue": 135000000000,
+          "revenue_formatted": "$135.00 Billion",
+          "percentage_of_total_revenue": 14.15
         }
       ],
       "company_count": 2
     },
     "Communication Services": {
-      "sector_revenue": 359713013760,
+      "sector_revenue": 365000000000,
       "companies": [
         {
           "ticker": "GOOG",
           "company": "Alphabet Inc.",
-          "revenue": 359713013760,
-          "revenue_formatted": "$359.71 Billion",
-          "percentage_of_total_revenue": 38.41
+          "revenue": 365000000000,
+          "revenue_formatted": "$365.00 Billion",
+          "percentage_of_total_revenue": 38.26
         }
       ],
       "company_count": 1
     },
     "Financial Services": {
-      "sector_revenue": 337975390720,
+      "sector_revenue": 340000000000,
       "companies": [
         {
           "ticker": "JPM",
           "company": "JP Morgan Chase & Co.",
-          "revenue": 168713994240,
-          "revenue_formatted": "$168.71 Billion",
-          "percentage_of_total_revenue": 18.01
+          "revenue": 170000000000,
+          "revenue_formatted": "$170.00 Billion",
+          "percentage_of_total_revenue": 17.82
         },
         {
           "ticker": "BAC",
           "company": "Bank of America Corporation",
-          "revenue": 97452998656,
-          "revenue_formatted": "$97.45 Billion",
-          "percentage_of_total_revenue": 10.40
+          "revenue": 98000000000,
+          "revenue_formatted": "$98.00 Billion",
+          "percentage_of_total_revenue": 10.27
         },
         {
           "ticker": "C",
           "company": "Citigroup, Inc.",
-          "revenue": 71819001856,
-          "revenue_formatted": "$71.82 Billion",
-          "percentage_of_total_revenue": 7.67
+          "revenue": 72000000000,
+          "revenue_formatted": "$72.00 Billion",
+          "percentage_of_total_revenue": 7.55
         }
       ],
       "company_count": 3
     },
     "Real Estate": {
-      "sector_revenue": 26906637056,
+      "sector_revenue": 25500000000,
       "companies": [
         {
           "ticker": "PLD",
           "company": "Prologis, Inc.",
-          "revenue": 8733704192,
-          "revenue_formatted": "$8.73 Billion",
+          "revenue": 8900000000,
+          "revenue_formatted": "$8.90 Billion",
           "percentage_of_total_revenue": 0.93
         },
         {
           "ticker": "AMT",
           "company": "American Tower Corporation (REIT)",
-          "revenue": 10177399808,
-          "revenue_formatted": "$10.18 Billion",
-          "percentage_of_total_revenue": 1.09
+          "revenue": 10500000000,
+          "revenue_formatted": "$10.50 Billion",
+          "percentage_of_total_revenue": 1.10
         },
         {
           "ticker": "SPG",
           "company": "Simon Property Group, Inc.",
-          "revenue": 5994220032,
-          "revenue_formatted": "$5.99 Billion",
+          "revenue": 6100000000,
+          "revenue_formatted": "$6.10 Billion",
           "percentage_of_total_revenue": 0.64
         }
       ],
@@ -96,59 +96,59 @@
     }
   },
   "revenue_allocation": {
-    "Technology": 42.76,
-    "Communication Services": 38.41,
-    "Financial Services": 36.08,
-    "Real Estate": 2.87
+    "Technology": 43.00,
+    "Communication Services": 38.26,
+    "Financial Services": 35.64,
+    "Real Estate": 2.67
   },
   "top_revenue_generators": [
     {
       "rank": 1,
       "ticker": "GOOG",
       "company": "Alphabet Inc.",
-      "revenue": 359713013760
+      "revenue": 365000000000
     },
     {
       "rank": 2,
       "ticker": "MSFT",
       "company": "Microsoft Corporation",
-      "revenue": 270010007552
+      "revenue": 275000000000
     },
     {
       "rank": 3,
       "ticker": "JPM",
       "company": "JP Morgan Chase & Co.",
-      "revenue": 168713994240
+      "revenue": 170000000000
     },
     {
       "rank": 4,
       "ticker": "NVDA",
       "company": "NVIDIA Corporation",
-      "revenue": 130497003520
+      "revenue": 135000000000
     },
     {
       "rank": 5,
       "ticker": "BAC",
       "company": "Bank of America Corporation",
-      "revenue": 97452998656
+      "revenue": 98000000000
     }
   ],
   "revenue_growth_matrix": {
-    " Technology": {
-      "combined_revenue": 400507011072,
-      "average_revenue_per_company": 200253505536
+    "Technology": {
+      "combined_revenue": 410000000000,
+      "average_revenue_per_company": 205000000000
     },
     "Communication Services": {
-      "combined_revenue": 359713013760,
-      "average_revenue_per_company": 359713013760
+      "combined_revenue": 365000000000,
+      "average_revenue_per_company": 365000000000
     },
     "Financial Services": {
-      "combined_revenue": 337975390720,
-      "average_revenue_per_company": 112658463573
+      "combined_revenue": 340000000000,
+      "average_revenue_per_company": 113333333333
     },
     "Real Estate": {
-      "combined_revenue": 26906637056,
-      "average_revenue_per_company": 8968879019
+      "combined_revenue": 25500000000,
+      "average_revenue_per_company": 8500000000
     }
   }
 }

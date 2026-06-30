@@ -1,0 +1,87 @@
+{
+  "description": "Whitelabel companies approved for investment and trading",
+  "last_updated": "2025-06-17",
+  "companies": [
+    {
+      "ticker": "MSFT",
+      "company": "Microsoft Corporation",
+      "sector": "Technology",
+      "status": "active",
+      "min_market_cap": 100000000000,
+      "whitelisted_date": "2025-01-15",
+      "risk_level": "low"
+    },
+    {
+      "ticker": "GOOG",
+      "company": "Alphabet Inc.",
+      "sector": "Communication Services",
+      "status": "active",
+      "min_market_cap": 100000000000,
+      "whitelisted_date": "2025-01-15",
+      "risk_level": "low"
+    },
+    {
+      "ticker": "NVDA",
+      "company": "NVIDIA Corporation",
+      "sector": "Technology",
+      "status": "active",
+      "min_market_cap": 100000000000,
+      "whitelisted_date": "2025-02-01",
+      "risk_level": "medium"
+    },
+    {
+      "ticker": "JPM",
+      "company": "JP Morgan Chase & Co.",
+      "sector": "Financial Services",
+      "status": "active",
+      "min_market_cap": 50000000000,
+      "whitelisted_date": "2025-01-15",
+      "risk_level": "low"
+    },
+    {
+      "ticker": "BAC",
+      "company": "Bank of America Corporation",
+      "sector": "Financial Services",
+      "status": "active",
+      "min_market_cap": 50000000000,
+      "whitelisted_date": "2025-01-15",
+      "risk_level": "medium"
+    },
+    {
+      "ticker": "C",
+      "company": "Citigroup, Inc.",
+      "sector": "Financial Services",
+      "status": "active",
+      "min_market_cap": 50000000000,
+      "whitelisted_date": "2025-02-01",
+      "risk_level": "medium"
+    },
+    {
+      "ticker": "PLD",
+      "company": "Prologis, Inc.",
+      "sector": "Real Estate",
+      "status": "active",
+      "min_market_cap": 10000000000,
+      "whitelisted_date": "2025-03-01",
+      "risk_level": "low"
+    },
+    {
+      "ticker": "AMT",
+      "company": "American Tower Corporation (REIT)",
+      "sector": "Real Estate",
+      "status": "active",
+      "min_market_cap": 10000000000,
+      "whitelisted_date": "2025-03-01",
+      "risk_level": "low"
+    },
+    {
+      "ticker": "SPG",
+      "company": "Simon Property Group, Inc.",
+      "sector": "Real Estate",
+      "status": "active",
+      "min_market_cap": 10000000000,
+      "whitelisted_date": "2025-03-01",
+      "risk_level": "medium"
+    }
+  ]
+}
